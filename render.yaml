@@ -7,7 +7,7 @@ services:
     dockerfilePath: ./Dockerfile
     healthCheckPath: /api/health
     # Free tier (512 MB) may OOM during reprojection; Starter is the safe choice.
-    plan: starter
+    plan: free
     autoDeploy: true
     envVars:
       - key: GEMINI_API_KEY
