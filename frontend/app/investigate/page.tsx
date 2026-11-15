@@ -12,7 +12,7 @@ export default function InvestigatePage() {
     <main>
       <Suspense
         fallback={
-          <div className="page py-10 text-sm text-muted" role="status">
+          <div className="page mono py-10 text-sm text-muted" role="status">
             Loading investigation…
           </div>
         }

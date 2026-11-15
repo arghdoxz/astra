@@ -7,10 +7,10 @@ const VERDICT: Record<
   EvidenceItem["verdict"],
   { icon: string; text: string; cls: string; sr: string }
 > = {
-  supports: { icon: "✔", text: "text-[#59d98e]", cls: "border-[#59d98e]/40 bg-[#59d98e]/10", sr: "Supports" },
-  weakens: { icon: "✖", text: "text-[#f26b6b]", cls: "border-[#f26b6b]/40 bg-[#f26b6b]/10", sr: "Weakens" },
-  neutral: { icon: "–", text: "text-[#8a97b4]", cls: "border-[#1d2742] bg-transparent", sr: "Neutral" },
-  unavailable: { icon: "?", text: "text-[#8a97b4]", cls: "border-dashed border-[#8a97b4]/50 bg-transparent", sr: "Unavailable" },
+  supports: { icon: "✔", text: "text-good", cls: "border-good bg-panel", sr: "Supports" },
+  weakens: { icon: "✖", text: "text-bad", cls: "border-bad bg-panel", sr: "Weakens" },
+  neutral: { icon: "–", text: "text-muted", cls: "border-line bg-panel", sr: "Neutral" },
+  unavailable: { icon: "?", text: "text-muted", cls: "border-dashed border-muted bg-panel", sr: "Unavailable" },
 };
 
 function formatValue(item: EvidenceItem): string {
@@ -24,35 +24,35 @@ function ItemRow({ item }: { item: EvidenceItem }) {
   const m = VERDICT[item.verdict] ?? VERDICT.neutral;
   const prov = item.provenance ?? [];
   return (
-    <li className="border-b border-[#1d2742]/70 last:border-0">
+    <li className="border-b border-line last:border-0">
       <details className="group">
-        <summary className="flex cursor-pointer list-none items-start gap-2 py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da] [&::-webkit-details-marker]:hidden">
+        <summary className="flex cursor-pointer list-none items-start gap-2 py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-pencil [&::-webkit-details-marker]:hidden">
           <span
-            className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-xs font-bold ${m.cls} ${m.text}`}
+            className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center border text-sm font-bold ${m.cls} ${m.text}`}
           >
             <span aria-hidden>{m.icon}</span>
             <span className="sr-only">{m.sr}</span>
           </span>
           <span className="min-w-0 flex-1">
             <span className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-              <span className="text-sm font-medium text-[#e6ebf5]">{item.label}</span>
-              <span className="text-sm tabular-nums text-[#e6ebf5]">{formatValue(item)}</span>
+              <span className="text-sm font-medium text-fg">{item.label}</span>
+              <span className="text-sm tabular-nums text-fg">{formatValue(item)}</span>
             </span>
-            <span className="mt-0.5 flex flex-wrap items-center justify-between gap-x-3 text-xs text-[#8a97b4]">
+            <span className="mt-0.5 flex flex-wrap items-center justify-between gap-x-3 text-sm text-muted">
               <span>{item.threshold ? `Threshold: ${item.threshold}` : "No threshold"}</span>
-              <span className="text-[#74c7da] group-open:hidden">Why? ▸</span>
-              <span className="hidden text-[#74c7da] group-open:inline">Hide ▾</span>
+              <span className="text-accent group-open:hidden">Why? ▸</span>
+              <span className="hidden text-accent group-open:inline">Hide ▾</span>
             </span>
           </span>
         </summary>
-        <div className="mb-2 ml-7 space-y-1.5 rounded-sm bg-[#0a0f1c]/70 px-3 py-2 text-xs leading-relaxed text-[#c3cde3]">
+        <div className="mb-2 ml-7 space-y-1.5 border-l-2 border-line bg-panel2 px-3 py-2 text-sm leading-relaxed text-fg">
           <p>{item.explanation}</p>
           {prov.length > 0 && (
-            <details className="text-[#8a97b4]">
-              <summary className="cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]">
+            <details className="text-muted">
+              <summary className="cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-pencil">
                 Provenance ({prov.length})
               </summary>
-              <p className="mt-1 break-all font-mono text-[11px]">{prov.join(", ")}</p>
+              <p className="mt-1 break-all mono text-sm">{prov.join(", ")}</p>
             </details>
           )}
         </div>
@@ -70,39 +70,39 @@ export default function EvidencePanel({ evidence, title }: { evidence: Evidence;
         <div className="flex flex-wrap items-center gap-2">
           <ClassificationBadge classification={evidence.classification} label={evidence.classification_label} />
           <NoveltyChip novelty={evidence.novelty} />
-          <span className="text-xs text-[#8a97b4]">
-            <span className="font-semibold text-[#59d98e]">{evidence.supports}</span> support ·{" "}
-            <span className="font-semibold text-[#f26b6b]">{evidence.weakens}</span> weaken
+          <span className="text-sm text-muted">
+            <span className="font-semibold text-good">{evidence.supports}</span> support ·{" "}
+            <span className="font-semibold text-bad">{evidence.weakens}</span> weaken
           </span>
         </div>
-        <p className="text-sm leading-relaxed text-[#e6ebf5]">{evidence.summary}</p>
+        <p className="text-sm leading-relaxed text-fg">{evidence.summary}</p>
 
-        <details className="rounded-sm border border-[#1d2742] bg-[#0a0f1c]/60 px-3 py-2 text-xs leading-relaxed text-[#8a97b4]">
-          <summary className="cursor-pointer font-medium text-[#74c7da] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]">
+        <details className="border border-line bg-panel px-3 py-2 text-sm leading-relaxed text-muted">
+          <summary className="cursor-pointer font-medium text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-pencil">
             What does this mean?
           </summary>
           <div className="mt-2 space-y-1.5">
             <p>
-              The <strong className="text-[#e6ebf5]">confidence tier</strong> is set by simple, published rules applied to
-              the checks below. It is <strong className="text-[#e6ebf5]">not a probability</strong>: nothing here says
+              The <strong className="text-fg">confidence tier</strong> is set by simple, published rules applied to
+              the checks below. It is <strong className="text-fg">not a probability</strong>: nothing here says
               “x % likely to be real”. The reason line says which rule fired.
             </p>
             <ul className="list-inside list-disc space-y-0.5">
               <li>
-                <span className="text-[#8a97b4]">Insufficient</span>: too few visits, too faint, or nothing measurable.
+                <span className="text-muted">Insufficient</span>: too few visits, too faint, or nothing measurable.
               </li>
               <li>
-                <span className="text-[#f2b84b]">Low</span>: measurable, but several checks disagree.
+                <span className="text-warn">Low</span>: measurable, but several checks disagree.
               </li>
               <li>
-                <span className="text-[#74c7da]">Moderate</span>: reasonably bright and at most one check weakens it.
+                <span className="text-accent">Moderate</span>: reasonably bright and at most one check weakens it.
               </li>
               <li>
-                <span className="text-[#59d98e]">Strong</span>: bright, repeated, and no check weakens it.
+                <span className="text-good">Strong</span>: bright, repeated, and no check weakens it.
               </li>
             </ul>
             <p>
-              A <span className="text-[#59d98e]">✔</span> supports the classification, a <span className="text-[#f26b6b]">✖</span>{" "}
+              A <span className="text-good">✔</span> supports the classification, a <span className="text-bad">✖</span>{" "}
               weakens it, – is neutral, and ? means the data needed for the check were unavailable. Open any row to see the
               plain-language reason and the exposures it came from. A catalog association is never proof of identity.
             </p>
@@ -111,7 +111,7 @@ export default function EvidencePanel({ evidence, title }: { evidence: Evidence;
       </div>
 
       {items.length === 0 ? (
-        <p className="mt-3 text-xs text-[#8a97b4]">No evidence items were produced.</p>
+        <p className="mt-3 text-sm text-muted">No evidence items were produced.</p>
       ) : (
         <ul className="mt-3">
           {items.map((it) => (

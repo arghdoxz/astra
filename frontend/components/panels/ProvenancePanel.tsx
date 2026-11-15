@@ -16,7 +16,7 @@ const ORIGIN: Record<Investigation["generated_from"], { label: string; tone: "cy
     text: "Real SPHEREx observations processed ahead of time with the same pipeline and saved as a static bundle.",
   },
   mock: {
-    label: "MOCK placeholder",
+    label: "Mock placeholder",
     tone: "amber",
     text: "Development placeholder data. These are NOT real SPHEREx observations and must not be interpreted scientifically.",
   },
@@ -47,7 +47,7 @@ export default function ProvenancePanel({ inv }: { inv: Investigation }) {
         <strong>{origin.label}.</strong> {origin.text}
       </Note>
 
-      <dl className="mt-3 grid grid-cols-1 gap-x-4 gap-y-1.5 text-xs sm:grid-cols-2">
+      <dl className="mt-3 grid grid-cols-1 gap-x-4 gap-y-1.5 text-sm sm:grid-cols-2">
         <Row k="Collections" v={p.collections.length ? p.collections.join(", ") : "—"} />
         <Row k="Pipeline versions" v={p.pipeline_versions.length ? p.pipeline_versions.join(", ") : "not reported"} />
         <Row
@@ -64,7 +64,7 @@ export default function ProvenancePanel({ inv }: { inv: Investigation }) {
 
       <SectionTitle>Service status</SectionTitle>
       {Object.keys(p.services ?? {}).length === 0 ? (
-        <p className="text-xs text-[#8a97b4]">No service calls recorded.</p>
+        <p className="text-sm text-muted">No service calls recorded.</p>
       ) : (
         <div className="flex flex-wrap gap-1.5">
           {Object.entries(p.services).map(([k, v]) => (
@@ -75,7 +75,7 @@ export default function ProvenancePanel({ inv }: { inv: Investigation }) {
       {inv.warnings.length > 0 && (
         <>
           <SectionTitle>Warnings</SectionTitle>
-          <ul className="list-inside list-disc space-y-0.5 text-xs text-[#f2d9a0]">
+          <ul className="list-inside list-disc space-y-0.5 text-sm text-warn">
             {inv.warnings.map((w, i) => (
               <li key={i}>{w}</li>
             ))}
@@ -84,15 +84,15 @@ export default function ProvenancePanel({ inv }: { inv: Investigation }) {
       )}
 
       <SectionTitle>Exposures used</SectionTitle>
-      <details className="rounded-sm border border-[#1d2742] bg-[#0a0f1c]/60 px-3 py-2">
-        <summary className="cursor-pointer text-xs font-medium text-[#74c7da] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]">
+      <details className="border border-line bg-panel px-3 py-2">
+        <summary className="cursor-pointer text-sm font-medium text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-pencil">
           Show {inv.exposures.length} exposure{inv.exposures.length === 1 ? "" : "s"}
         </summary>
         <div className="mt-2 max-h-72 overflow-y-auto">
           <TableWrap>
             <table className="w-full min-w-[520px] border-collapse">
-              <thead className="sticky top-0 bg-[#0a0f1c]">
-                <tr className="border-b border-[#1d2742]">
+              <thead className="sticky top-0 bg-panel">
+                <tr className="border-b border-line">
                   <th className={thCls}>obs_id</th>
                   <th className={thCls}>Publisher DID</th>
                   <th className={thCls}>D</th>
@@ -102,13 +102,13 @@ export default function ProvenancePanel({ inv }: { inv: Investigation }) {
               </thead>
               <tbody>
                 {inv.exposures.map((e) => (
-                  <tr key={`${e.obs_id}-${e.detector}`} className="border-b border-[#1d2742]/60 last:border-0">
-                    <td className={`${tdCls} font-mono`}>{e.obs_id}</td>
-                    <td className={`${tdCls} font-mono`}>{e.did}</td>
+                  <tr key={`${e.obs_id}-${e.detector}`} className="border-b border-line last:border-0">
+                    <td className={`${tdCls} mono`}>{e.obs_id}</td>
+                    <td className={`${tdCls} mono`}>{e.did}</td>
                     <td className={tdCls}>{e.detector}</td>
                     <td className={tdCls}>{e.date_obs?.slice(0, 10) ?? mjdToDate(e.mjd)}</td>
                     <td className={tdCls}>
-                      <span className={e.status === "ok" ? "text-[#59d98e]" : e.status === "failed" ? "text-[#f26b6b]" : "text-[#f2b84b]"}>{e.status}</span>
+                      <span className={e.status === "ok" ? "text-good" : e.status === "failed" ? "text-bad" : "text-warn"}>{e.status}</span>
                     </td>
                   </tr>
                 ))}
@@ -141,16 +141,16 @@ export default function ProvenancePanel({ inv }: { inv: Investigation }) {
         )}
       </div>
 
-      <p className="mt-4 border-t border-[#1d2742] pt-3 text-[11px] leading-relaxed text-[#8a97b4]">{CREDITS}</p>
+      <p className="mt-5 border-t border-line pt-3 text-sm leading-relaxed text-muted">{CREDITS}</p>
     </Card>
   );
 }
 
 function Row({ k, v }: { k: string; v: string }) {
   return (
-    <div className="flex flex-wrap justify-between gap-x-2 border-b border-[#1d2742]/50 pb-1">
-      <dt className="text-[#8a97b4]">{k}</dt>
-      <dd className="break-words text-right text-[#e6ebf5]">{v}</dd>
+    <div className="flex flex-wrap justify-between gap-x-2 border-b border-line pb-1">
+      <dt className="text-muted">{k}</dt>
+      <dd className="break-words text-right text-fg">{v}</dd>
     </div>
   );
 }

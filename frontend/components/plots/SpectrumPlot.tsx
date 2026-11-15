@@ -147,7 +147,7 @@ export default function SpectrumPlot({
       x1: e.hi,
       y0: 0,
       y1: 1,
-      fillcolor: i % 2 === 0 ? "rgba(116, 199, 218,0.05)" : "rgba(255,255,255,0.0)",
+      fillcolor: i % 2 === 0 ? "rgba(18,20,22,0.04)" : "rgba(0,0,0,0)",
       line: { color: PALETTE.border, width: 1, dash: "dot" },
       layer: "below",
     }));
@@ -159,7 +159,7 @@ export default function SpectrumPlot({
       text: `D${e.d}`,
       showarrow: false,
       yanchor: "bottom",
-      font: { size: 10, color: PALETTE.muted },
+      font: { size: 12, color: PALETTE.muted },
     }));
     if (showBands) {
       for (const f of spec?.features ?? []) {
@@ -171,7 +171,7 @@ export default function SpectrumPlot({
           x1: f.wavelength_um + 0.04,
           y0: 0,
           y1: 1,
-          fillcolor: "rgba(242,184,75,0.13)",
+          fillcolor: "rgba(138,90,6,0.14)",
           line: { width: 0 },
           layer: "below",
         });
@@ -185,7 +185,7 @@ export default function SpectrumPlot({
           showarrow: false,
           yanchor: "bottom",
           xanchor: "center",
-          font: { size: 9, color: "#c9a04a" },
+          font: { size: 12, color: PALETTE.ochre },
           hovertext: f.note,
         });
       }
@@ -259,27 +259,27 @@ export default function SpectrumPlot({
             />
           </div>
 
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#8a97b4]">
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
             <label className="inline-flex cursor-pointer items-center gap-1.5">
               <input
                 type="checkbox"
                 checked={showBands}
                 onChange={(e) => setShowBands(e.target.checked)}
-                className="h-3.5 w-3.5 accent-[#f2b84b]"
+                className="h-3.5 w-3.5 accent-pencil"
               />
               <span>
-                Show molecular <span className="text-[#f2b84b]">reference bands</span> — not detections
+                Show molecular <span className="text-warn">reference bands</span> — not detections
               </span>
             </label>
           </div>
 
-          <ul className="mt-2 space-y-1 text-xs leading-relaxed text-[#8a97b4]">
+          <ul className="mt-2 space-y-1 text-xs leading-relaxed text-muted">
             <li>
-              Hollow markers marked “≥” are <strong className="text-[#e6ebf5]">saturated: lower limits</strong>, shown
+              Hollow markers marked “≥” are <strong className="text-fg">saturated: lower limits</strong>, shown
               without error bars. Broken lines are gaps where no usable data exist.
             </li>
             <li>
-              Amber bands are literature reference positions for common molecules. SPHEREx spectra have low resolution
+              Ochre bands are literature reference positions for common molecules. SPHEREx spectra have low resolution
               (R ≈ 40–130), so a band overlapping the data does not mean the molecule is detected.
             </li>
             <li>

@@ -2,11 +2,12 @@ import type { ReactNode } from "react";
 
 type BannerTone = "info" | "warn" | "danger" | "ok";
 
-const STYLES: Record<BannerTone, { box: string; dot: string }> = {
-  info: { box: "border-accent/40 bg-accent/5", dot: "bg-accent" },
-  warn: { box: "border-warn/45 bg-warn/8", dot: "bg-warn" },
-  danger: { box: "border-bad/45 bg-bad/8", dot: "bg-bad" },
-  ok: { box: "border-good/40 bg-good/5", dot: "bg-good" },
+// An archive note pinned to the sheet: paper, a full ink border in the tone colour, a typed label.
+const STYLES: Record<BannerTone, { box: string; label: string; word: string }> = {
+  info: { box: "border-accent", label: "text-accent", word: "Note" },
+  warn: { box: "border-warn", label: "text-warn", word: "Caution" },
+  danger: { box: "border-bad", label: "text-bad", word: "Problem" },
+  ok: { box: "border-good", label: "text-good", word: "OK" },
 };
 
 export default function Banner({
@@ -24,11 +25,11 @@ export default function Banner({
 }) {
   const s = STYLES[tone];
   return (
-    <div role={role ?? (tone === "danger" ? "alert" : "status")} className={`fade-in flex gap-3 items-start rounded-sm border px-3.5 py-2.5 text-sm ${s.box}`}>
-      <span aria-hidden className={`mt-[7px] h-2 w-2 shrink-0 rounded-full ${s.dot}`} />
+    <div role={role ?? (tone === "danger" ? "alert" : "status")} className={`fade-in flex gap-3 items-start border bg-panel px-3.5 py-2.5 text-sm ${s.box}`}>
+      <span aria-hidden className={`mono shrink-0 font-bold ${s.label}`}>{s.word}:</span>
       <div className="min-w-0 flex-1">
-        {title && <div className="font-medium">{title}</div>}
-        {children && <div className="text-[#c5cde0]">{children}</div>}
+        {title && <div className="font-semibold">{title}</div>}
+        {children && <div className="text-fg">{children}</div>}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </div>

@@ -103,7 +103,7 @@ export default function LightCurvePlot({ inv }: { inv: Investigation }) {
         x1: mjdToIso(end),
         y0: 0,
         y1: 1,
-        fillcolor: i % 2 === 0 ? "rgba(116, 199, 218,0.07)" : "rgba(242,184,75,0.06)",
+        fillcolor: i % 2 === 0 ? "rgba(31,63,138,0.06)" : "rgba(138,90,6,0.07)",
         line: { width: 0 },
         layer: "below",
       });
@@ -115,7 +115,7 @@ export default function LightCurvePlot({ inv }: { inv: Investigation }) {
         text: v.id,
         showarrow: false,
         yanchor: "bottom",
-        font: { size: 10, color: PALETTE.muted },
+        font: { size: 12, color: PALETTE.muted },
       });
     });
 
@@ -158,19 +158,19 @@ export default function LightCurvePlot({ inv }: { inv: Investigation }) {
       ) : (
         <>
           <fieldset className="mb-2">
-            <legend className="mb-1 text-xs text-[#8a97b4]">Detectors shown</legend>
+            <legend className="mb-1 text-xs text-muted">Detectors shown</legend>
             <div className="flex flex-wrap gap-1.5">
               {available.map((d) => {
                 const on = !off.has(d);
                 return (
                   <label
                     key={d}
-                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-sm border px-2 py-1 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-[#74c7da] ${
-                      on ? "border-[#74c7da]/40 bg-[#74c7da]/10 text-[#e6ebf5]" : "border-[#1d2742] text-[#8a97b4]"
+                    className={`inline-flex cursor-pointer items-center gap-1.5 border px-2 py-1 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-pencil ${
+                      on ? "border-fg bg-panel2 text-fg" : "border-line text-muted"
                     }`}
                   >
                     <input type="checkbox" className="sr-only" checked={on} onChange={() => toggleDet(d)} />
-                    <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: detColor(d), opacity: on ? 1 : 0.3 }} />
+                    <span aria-hidden className="inline-block h-2.5 w-2.5" style={{ background: detColor(d), opacity: on ? 1 : 0.3 }} />
                     D{d}
                   </label>
                 );
@@ -200,9 +200,9 @@ export default function LightCurvePlot({ inv }: { inv: Investigation }) {
             </div>
           )}
 
-          <ul className="mt-2 space-y-1 text-xs leading-relaxed text-[#8a97b4]">
+          <ul className="mt-2 space-y-1 text-xs leading-relaxed text-muted">
             <li>
-              Error bars include a <strong className="text-[#e6ebf5]">2% systematic floor</strong> added in quadrature
+              Error bars include a <strong className="text-fg">2% systematic floor</strong> added in quadrature
               to the photometric error. Hollow markers are saturated lower limits (no error bar); × marks outliers, which
               are excluded from χ².
             </li>
@@ -232,12 +232,12 @@ export default function LightCurvePlot({ inv }: { inv: Investigation }) {
         Variability metrics
       </SectionTitle>
       {metrics.length === 0 ? (
-        <p className="text-xs text-[#8a97b4]">No variability metrics were computed (too few unsaturated points).</p>
+        <p className="text-xs text-muted">No variability metrics were computed (too few unsaturated points).</p>
       ) : (
         <TableWrap>
           <table className="w-full min-w-[420px] border-collapse">
             <thead>
-              <tr className="border-b border-[#1d2742]">
+              <tr className="border-b border-fg">
                 <th className={thCls}>Detector</th>
                 <th className={thCls}>n</th>
                 <th className={thCls}>
@@ -250,16 +250,16 @@ export default function LightCurvePlot({ inv }: { inv: Investigation }) {
             </thead>
             <tbody>
               {metrics.map((m) => (
-                <tr key={m.detector} className="border-b border-[#1d2742]/60 last:border-0">
+                <tr key={m.detector} className="border-b border-line last:border-0">
                   <td className={tdCls}>
-                    <span aria-hidden className="mr-1.5 inline-block h-2 w-2 rounded-full" style={{ background: detColor(m.detector) }} />D{m.detector}
+                    <span aria-hidden className="mr-1.5 inline-block h-2 w-2" style={{ background: detColor(m.detector) }} />D{m.detector}
                   </td>
                   <td className={tdCls}>{m.n}</td>
                   <td className={tdCls}>{num(m.chi2_red, 2)}</td>
                   <td className={tdCls}>{num(m.amp_sigma, 1)}</td>
                   <td className={tdCls}>{m.frac_amp === null ? "—" : `${(m.frac_amp * 100).toFixed(1)}%`}</td>
                   <td className={tdCls}>
-                    {m.significant ? <span className="text-[#59d98e]">✓ yes</span> : <span className="text-[#8a97b4]">no</span>}
+                    {m.significant ? <span className="text-good">✓ yes</span> : <span className="text-muted">no</span>}
                   </td>
                 </tr>
               ))}

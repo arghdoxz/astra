@@ -1,20 +1,26 @@
 @import "tailwindcss";
 
+/*
+ * ASTRA "plate archive" theme.
+ * The surface is a photographic plate seen on a light box: cool glass grey, black emulsion
+ * ink, red grease pencil for marks and actions, blue catalogue ink for reference data.
+ * Sky images are shown as negatives (black stars on pale glass), the way plates were read.
+ */
 :root {
-  --bg: #05070d;
-  --bg-2: #080c16;
-  --bg-3: #0f1626;
-  --line: #1c2538;
-  --text: #e6ebf5;
-  --muted: #8a97b4;
-  --cyan: #74c7da;
-  --amber: #f2b84b;
-  --sodium: #ffb547;
-  --magenta: #c58ab8;
-  --tick: rgba(160, 180, 215, 0.55);
-  --green: #59d98e;
-  --red: #f26b6b;
-  color-scheme: dark;
+  --bg: #e3e6e4;        /* plate glass on the light box */
+  --bg-2: #f1f2f0;      /* paper sheet */
+  --bg-3: #d7dbd8;      /* recessed glass / input wells */
+  --line: #b3b9b6;      /* pencil rule */
+  --line-soft: #ccd1ce;
+  --text: #121416;      /* emulsion black */
+  --muted: #4f565b;     /* graphite */
+  --pencil: #b42d1c;    /* red grease pencil */
+  --pencil-ink: #ffffff;
+  --blue: #1f3f8a;      /* catalogue ink */
+  --ochre: #8a5a06;
+  --moss: #2f6430;
+  --plum: #7a3a6a;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -24,126 +30,113 @@
   --color-line: var(--line);
   --color-fg: var(--text);
   --color-muted: var(--muted);
-  --color-accent: var(--cyan);
-  --color-warn: var(--amber);
-  --color-mag: var(--magenta);
-  --color-sodium: var(--sodium);
-  --color-good: var(--green);
-  --color-bad: var(--red);
-  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
-  --font-display: var(--font-plex-cond), var(--font-plex-sans), sans-serif;
+  --color-accent: var(--blue);
+  --color-pencil: var(--pencil);
+  --color-sodium: var(--pencil);
+  --color-warn: var(--ochre);
+  --color-mag: var(--plum);
+  --color-good: var(--moss);
+  --color-bad: var(--pencil);
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-type), ui-monospace, monospace;
+  --font-display: var(--font-serif), Georgia, serif;
 }
 
 html { background: var(--bg); }
 body {
-  background: transparent; /* the decorative sky canvas sits behind */
+  background: transparent; /* the plate canvas sits behind */
   color: var(--text);
-  font-family: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
   line-height: 1.55;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
 }
+p, li { text-wrap: pretty; }
+h1, h2, h3 { text-wrap: balance; }
 
-/* In a layer so component classes (.btn etc.) can override link colour. */
 @layer base {
-  a { color: var(--cyan); text-underline-offset: 3px; }
-  a:hover { text-decoration: underline; }
+  /* Keep reading lines near 65 characters; utilities can still narrow them. */
+  main p, main li { max-width: 62ch; }
+  a { color: var(--blue); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--pencil); }
 }
-::selection { background: rgba(255, 181, 71, 0.3); }
+::selection { background: rgba(180, 45, 28, 0.18); }
 
-:focus-visible {
-  outline: 2px solid var(--cyan);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
+:focus-visible { outline: 2px solid var(--pencil); outline-offset: 2px; }
 
 @layer components {
-  .page { width: 100%; max-width: 1360px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
-  .card {
-    background: rgba(8, 12, 22, 0.94);
-    border: 1px solid var(--line);
-    border-radius: 3px;
-  }
-  /* viewfinder corner ticks, drawn with gradients so no pseudo-elements are needed */
-  .frame {
-    --t: var(--tick);
-    background-image:
-      linear-gradient(var(--t), var(--t)), linear-gradient(var(--t), var(--t)),
-      linear-gradient(var(--t), var(--t)), linear-gradient(var(--t), var(--t)),
-      linear-gradient(var(--t), var(--t)), linear-gradient(var(--t), var(--t)),
-      linear-gradient(var(--t), var(--t)), linear-gradient(var(--t), var(--t));
-    background-repeat: no-repeat;
-    background-size: 12px 1px, 1px 12px, 12px 1px, 1px 12px, 12px 1px, 1px 12px, 12px 1px, 1px 12px;
-    background-position: left top, left top, right top, right top, left bottom, left bottom, right bottom, right bottom;
-  }
-  .rule-label {
-    display: flex; align-items: center; gap: 10px;
-    font-family: var(--font-plex-mono), ui-monospace, monospace;
-    font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
-  }
-  .rule-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-  .card-pad { padding: 16px; }
-  .eyebrow {
-    font-family: var(--font-plex-mono), ui-monospace, monospace;
-    font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
-  }
-  .h-sec { font-size: 1.05rem; font-weight: 600; letter-spacing: 0.01em; }
+  .page { width: 100%; max-width: 1320px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+  @media (min-width: 640px) { .page { padding-left: 28px; padding-right: 28px; } }
+
+  /* A paper sheet laid on the glass. */
+  .card { background: var(--bg-2); border: 1px solid var(--line); border-radius: 0; }
+  .card-pad { padding: 18px; }
+  /* A sheet inside a sheet is just a ruled section: never a box in a box. */
+  .card .card { border-width: 1px 0 0; background: transparent; padding-left: 0; padding-right: 0; padding-bottom: 0; }
+
+  /* Section headings: serif, sentence case. Never a tracked uppercase kicker. */
+  .h-sec { font-family: var(--font-serif), Georgia, serif; font-size: 1.3rem; font-weight: 600; line-height: 1.2; }
+  .eyebrow { font-size: 0.9rem; color: var(--muted); }
+  .serif { font-family: var(--font-serif), Georgia, serif; }
+
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    min-height: 34px; padding: 4px 12px; border-radius: 3px; font-size: 0.85rem; font-weight: 500;
-    background: var(--bg-3); border: 1px solid var(--line); color: var(--text); cursor: pointer;
-    transition: background-color 160ms, border-color 160ms, transform 160ms, opacity 160ms;
+    min-height: 36px; padding: 4px 14px; border-radius: 0; font-size: 0.9rem; font-weight: 500;
+    background: var(--bg-2); border: 1px solid var(--line); color: var(--text); cursor: pointer;
+    transition: background-color 120ms, border-color 120ms;
   }
-  .btn:hover:not(:disabled) { border-color: #34435f; background: #152034; text-decoration: none; }
-  .btn:active:not(:disabled) { transform: translateY(1px); }
+  .btn:hover:not(:disabled) { border-color: var(--text); text-decoration: none; color: var(--text); }
   .btn:disabled { opacity: 0.45; cursor: not-allowed; }
   .btn[aria-pressed="true"], .btn[aria-selected="true"] {
-    border-color: rgba(116, 199, 218, 0.6); color: var(--cyan); background: rgba(116, 199, 218, 0.1);
+    border-color: var(--text); font-weight: 600; box-shadow: inset 0 -3px 0 var(--pencil);
   }
-  .btn-primary {
-    background: var(--sodium); color: #1a1004; border-color: var(--sodium); font-weight: 600;
-    font-family: var(--font-plex-mono), ui-monospace, monospace; font-size: 0.78rem;
-    letter-spacing: 0.08em; text-transform: uppercase;
-  }
-  .btn-primary:hover:not(:disabled) { background: #ffc66e; border-color: #ffc66e; }
-  .btn-sm { min-height: 28px; padding: 2px 9px; font-size: 0.78rem; border-radius: 2px; }
+  .btn-primary { background: var(--pencil); color: var(--pencil-ink); border-color: var(--pencil); font-weight: 600; }
+  .btn-primary:hover:not(:disabled) { background: #8f2214; border-color: #8f2214; color: #fff; }
+  .btn-sm { min-height: 30px; padding: 2px 10px; font-size: 0.85rem; }
+
   .input {
-    width: 100%; min-height: 40px; padding: 6px 12px; border-radius: 2px; background: #03050a;
-    border: 1px solid var(--line); color: var(--text); font-size: 0.95rem;
-    transition: border-color 160ms, box-shadow 160ms;
+    width: 100%; min-height: 42px; padding: 6px 12px; border-radius: 0; background: #fbfbfa;
+    border: 1px solid var(--line); border-bottom: 2px solid var(--text); color: var(--text); font-size: 1rem;
   }
-  .input::placeholder { color: #5f6b88; }
-  .input:focus { outline: none; border-color: var(--sodium); box-shadow: 0 0 0 1px var(--sodium); }
-  select.input { min-height: 34px; padding: 2px 8px; font-size: 0.85rem; width: auto; }
+  .input::placeholder { color: #61686d; }
+  .input:focus { outline: none; border-color: var(--pencil); border-bottom-color: var(--pencil); }
+  select.input { min-height: 36px; padding: 2px 8px; font-size: 0.9rem; width: auto; border-bottom-width: 1px; }
+
+  /* Small status labels: like a stamped tag, square, no fill colour wash. */
   .chip {
-    display: inline-flex; align-items: center; gap: 5px; padding: 1px 7px; border-radius: 2px;
-    font-family: var(--font-plex-mono), ui-monospace, monospace; font-size: 0.7rem; line-height: 1.6; border: 1px solid var(--line); color: var(--muted); background: var(--bg-3);
+    display: inline-flex; align-items: center; gap: 5px; padding: 0 6px; border-radius: 0;
+    font-size: 0.8rem; line-height: 1.6; border: 1px solid var(--line); color: var(--muted); background: transparent;
     white-space: nowrap;
   }
-  .chip-cyan { color: var(--cyan); border-color: rgba(116, 199, 218, 0.35); background: rgba(116, 199, 218, 0.06); }
-  .chip-amber { color: var(--amber); border-color: rgba(242, 184, 75, 0.4); background: rgba(242, 184, 75, 0.08); }
-  .chip-green { color: var(--green); border-color: rgba(89, 217, 142, 0.4); background: rgba(89, 217, 142, 0.08); }
-  .chip-red { color: var(--red); border-color: rgba(242, 107, 107, 0.4); background: rgba(242, 107, 107, 0.08); }
-  .chip-mag { color: var(--magenta); border-color: rgba(197, 138, 184, 0.4); background: rgba(197, 138, 184, 0.08); }
-  .mono { font-family: var(--font-plex-mono), ui-monospace, monospace; }
-  .prose-astra p { margin: 0 0 0.9em; color: #c5cde0; }
-  .prose-astra h2 { margin: 1.8em 0 0.6em; font-size: 1.25rem; font-weight: 600; }
-  .prose-astra h3 { margin: 1.2em 0 0.4em; font-size: 1rem; font-weight: 600; }
-  .prose-astra ul { margin: 0 0 1em 1.2em; list-style: disc; color: #c5cde0; }
+  .chip-cyan { color: var(--blue); border-color: var(--blue); }
+  .chip-amber { color: var(--ochre); border-color: var(--ochre); }
+  .chip-green { color: var(--moss); border-color: var(--moss); }
+  .chip-red { color: var(--pencil); border-color: var(--pencil); }
+  .chip-mag { color: var(--plum); border-color: var(--plum); }
+
+  /* Typed labels and numbers (plate envelopes, coordinates, tables). */
+  .mono { font-family: var(--font-type), ui-monospace, monospace; }
+
+  .prose-astra { max-width: 62ch; }
+  .prose-astra p { margin: 0 0 0.9em; color: #2a2f33; }
+  .prose-astra h2 { margin: 1.8em 0 0.5em; font-family: var(--font-serif), Georgia, serif; font-size: 1.6rem; font-weight: 600; line-height: 1.2; }
+  .prose-astra h3 { margin: 1.3em 0 0.4em; font-family: var(--font-serif), Georgia, serif; font-size: 1.2rem; font-weight: 600; }
+  .prose-astra ul { margin: 0 0 1em 1.2em; list-style: disc; color: #2a2f33; }
   .prose-astra li { margin: 0.3em 0; }
-  .fade-in { animation: fadeIn 220ms ease-out both; }
+  .fade-in { animation: fadeIn 160ms ease-out both; }
+
+  /* Sky images are read as negatives on the light box. */
+  .negative { filter: invert(1); }
 }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
-/* range inputs */
-input[type="range"] { accent-color: var(--sodium); height: 20px; cursor: pointer; }
+input[type="range"] { accent-color: var(--pencil); height: 20px; cursor: pointer; }
 
-
-table.data { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-table.data th { text-align: left; font-weight: 500; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line); }
-table.data td { padding: 6px 8px; border-bottom: 1px solid rgba(29, 39, 66, 0.6); }
+table.data { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+table.data th { text-align: left; font-weight: 600; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--text); }
+table.data td { padding: 6px 8px; border-bottom: 1px solid var(--line-soft); }

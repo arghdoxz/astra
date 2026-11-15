@@ -135,10 +135,10 @@ function StartScreen() {
     return () => window.clearTimeout(t);
   }, []);
   return (
-    <div className="page space-y-8 py-8">
+    <div className="page space-y-10 py-8">
       <div className="max-w-3xl space-y-3">
-        <h1 className="text-2xl font-semibold">Investigate a position on the sky</h1>
-        <p className="text-[#c5cde0]">
+        <h1 className="serif text-3xl font-semibold">Investigate a position on the sky</h1>
+        <p className="max-w-[62ch] text-fg">
           Enter a name or coordinates. ASTRA finds every SPHEREx exposure of that spot, stacks them into visits, and shows how the sky changed, with the measurements and evidence behind it.
         </p>
         <div className="card card-pad">
@@ -148,12 +148,12 @@ function StartScreen() {
       {recent.length > 0 && (
         <section aria-label="Recent investigations">
           <h2 className="h-sec mb-2">Recent in this browser</h2>
-          <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="max-w-3xl border-t border-fg">
             {recent.slice(0, 6).map((r) => (
-              <li key={r.href}>
-                <Link href={r.href} className="card block px-3 py-2 no-underline transition-colors hover:border-[#2c3b63] hover:no-underline">
-                  <span className="block font-medium text-fg">{r.name ?? "Custom position"}</span>
-                  <span className="mono block text-xs text-muted">
+              <li key={r.href} className="border-b border-line">
+                <Link href={r.href} className="flex flex-wrap items-baseline justify-between gap-x-4 px-1 py-2 text-fg no-underline hover:bg-panel hover:text-fg hover:no-underline">
+                  <span className="serif text-lg">{r.name ?? "Custom position"}</span>
+                  <span className="mono text-sm text-muted">
                     {r.ra.toFixed(4)}, {r.dec.toFixed(4)} · {r.fov_arcmin}′
                   </span>
                 </Link>
@@ -239,7 +239,7 @@ function Workspace({
     <>
       {/* data-source banner */}
       {inv.generated_from === "mock" && (
-        <Banner tone="danger" title="Development placeholder — not real data">
+        <Banner tone="danger" title="Development placeholder: not real data">
           This page is showing a mock bundle used only for UI development. Nothing here was measured from SPHEREx.
           {fallbackReason ? ` (${fallbackReason})` : ""}
         </Banner>
@@ -254,10 +254,10 @@ function Workspace({
       <header className="card card-pad">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
-            <h1 className="text-xl font-semibold sm:text-2xl">{name}</h1>
-            <p className="mono mt-0.5 text-xs text-muted sm:text-sm">
+            <h1 className="serif text-3xl font-semibold sm:text-4xl">{name}</h1>
+            <p className="mono mt-1 border-t border-line pt-1 text-sm text-fg">
               RA {formatRA(inv.request.ra)} · Dec {formatDec(inv.request.dec)}{" "}
-              <span className="opacity-75">
+              <span className="text-muted">
                 ({inv.request.ra.toFixed(5)}, {inv.request.dec.toFixed(5)}) · FOV {inv.request.fov_arcmin}′
               </span>
             </p>
@@ -270,7 +270,7 @@ function Workspace({
               )}
               {!running && novelty && <Badge>{novelty}</Badge>}
               {inv.target?.otype && <Badge title="SIMBAD object type">{inv.target.otype}</Badge>}
-              {running && <Badge tone="cyan">Running…</Badge>}
+              {running && <span className="mono text-sm text-muted">Running…</span>}
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -284,7 +284,7 @@ function Workspace({
               Copy iframe code
             </button>
             {isLive(inv) && done && (
-              <span className="flex items-center gap-1 text-xs text-muted">
+              <span className="flex items-center gap-1 text-sm text-muted">
                 Report:
                 {(["json", "csv", "md"] as const).map((f) => (
                   <a key={f} className="btn btn-sm no-underline hover:no-underline" href={reportUrl(inv.id, f)} target="_blank" rel="noopener noreferrer">
@@ -293,7 +293,7 @@ function Workspace({
                 ))}
               </span>
             )}
-            <span role="status" className="text-xs text-good">
+            <span role="status" className="text-sm text-good">
               {copied}
             </span>
           </div>
@@ -356,14 +356,14 @@ function Workspace({
       />
 
       {/* analysis tabs */}
-      <section className="card card-pad" aria-label="Analysis">
+      <section aria-label="Analysis">
         <Tabs tabs={tabs} value={tab} onChange={(t) => update({ tab: t })}>
           {tab === "evidence" && (
             <div className="space-y-4">
               {ev?.items ? <EvidencePanel evidence={ev} /> : <p className="text-sm text-muted">Evidence appears when scoring finishes.</p>}
               {isLive(inv) && done && (
-                <div className="rounded-sm border border-line p-3">
-                  <h3 className="mb-1 text-sm font-semibold">Your verdict on this target</h3>
+                <div className="border-t border-line pt-3">
+                  <h3 className="serif mb-1 text-lg font-semibold">Your verdict on this target</h3>
                   <AnnotationBox candidateId={`${inv.id}:target`} />
                 </div>
               )}
@@ -386,7 +386,7 @@ function Workspace({
                   if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               />
-              <p className="text-xs text-muted">Click a spectral channel to show only the exposures that sampled it in the image player.</p>
+              <p className="text-sm text-muted">Click a spectral channel to show only the exposures that sampled it in the image player.</p>
             </div>
           )}
           {tab === "candidates" && (

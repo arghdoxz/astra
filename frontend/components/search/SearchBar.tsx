@@ -90,7 +90,7 @@ export default function SearchBar({
         </p>
       )}
 
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
         <label className="flex items-center gap-2">
           Field of view
           <select className="input" value={fov} onChange={(e) => setFov(Number(e.target.value))} aria-label="Field of view in arcminutes">
@@ -118,10 +118,10 @@ export default function SearchBar({
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
         <span>Try a library target:</span>
         {TARGETS.map((t) => (
-          <button key={t.slug} type="button" className="btn btn-sm" onClick={() => go({ ra: t.ra, dec: t.dec, name: t.name, fov: t.fov_arcmin })}>
+          <button key={t.slug} type="button" className="py-1 text-accent underline underline-offset-4 hover:text-pencil" onClick={() => go({ ra: t.ra, dec: t.dec, name: t.name, fov: t.fov_arcmin })}>
             {t.name}
           </button>
         ))}

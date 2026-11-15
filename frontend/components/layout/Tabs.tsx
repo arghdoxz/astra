@@ -45,7 +45,7 @@ export default function Tabs<T extends string>({
         role="tablist"
         aria-label="Analysis"
         onKeyDown={onKey}
-        className="flex gap-1 overflow-x-auto border-b border-line pb-px [scrollbar-width:thin]"
+        className="relative z-10 -mb-px flex items-end gap-1 overflow-x-auto [scrollbar-width:thin]"
       >
         {tabs.map((t) => {
           const active = t.id === value;
@@ -58,25 +58,21 @@ export default function Tabs<T extends string>({
               aria-controls={`${idPrefix}-panel-${t.id}`}
               tabIndex={active ? 0 : -1}
               onClick={() => onChange(t.id)}
-              className={`relative shrink-0 px-3.5 py-2.5 text-sm transition-colors duration-150 cursor-pointer ${
-                active ? "text-fg" : "text-muted hover:text-fg"
+              className={`shrink-0 cursor-pointer border px-4 text-[0.95rem] ${
+                active
+                  ? "border-fg border-b-panel bg-panel py-2.5 font-semibold text-fg"
+                  : "border-line border-b-fg bg-panel2 py-2 text-muted hover:text-fg"
               }`}
             >
               <span className="inline-flex items-center gap-1.5">
                 {t.label}
                 {t.badge}
               </span>
-              <span
-                aria-hidden
-                className={`absolute left-2 right-2 -bottom-px h-[2px] rounded transition-opacity duration-150 ${
-                  active ? "bg-accent opacity-100" : "opacity-0"
-                }`}
-              />
             </button>
           );
         })}
       </div>
-      <div role="tabpanel" id={`${idPrefix}-panel-${value}`} aria-labelledby={`${idPrefix}-${value}`} className="pt-4 fade-in" key={value}>
+      <div role="tabpanel" id={`${idPrefix}-panel-${value}`} aria-labelledby={`${idPrefix}-${value}`} className="card border-fg card-pad sm:p-6" key={value}>
         {children}
       </div>
     </div>

@@ -42,18 +42,18 @@ export default function CandidateList({
                   type="button"
                   onClick={() => onSelect(c.id)}
                   aria-pressed={sel}
-                  className={`w-full rounded-sm border p-2.5 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#74c7da] ${
-                    sel ? "border-[#74c7da]/70 bg-[#74c7da]/10" : "border-[#1d2742] bg-[#0a0f1c]/60 hover:border-[#74c7da]/40"
+                  className={`w-full border p-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pencil ${
+                    sel ? "border-fg border-l-4 border-l-pencil bg-panel2" : "border-line bg-panel hover:border-fg"
                   }`}
                 >
                   <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                    <span className="font-mono text-sm font-semibold text-[#e6ebf5]">{c.id}</span>
-                    <span className="text-xs text-[#e6ebf5]">{KIND_LABEL[c.kind]}</span>
-                    <span className="text-xs tabular-nums text-[#8a97b4]">peak Z {num(c.peak_z, 1)}</span>
-                    <span className="text-xs text-[#8a97b4]">
+                    <span className="mono text-sm font-semibold text-fg">{c.id}</span>
+                    <span className="text-sm text-fg">{KIND_LABEL[c.kind]}</span>
+                    <span className="text-sm tabular-nums text-muted">peak Z {num(c.peak_z, 1)}</span>
+                    <span className="text-sm text-muted">
                       {c.detectors.map((d) => `D${d}`).join(", ") || "—"}
                     </span>
-                    <span className="text-xs text-[#8a97b4]">
+                    <span className="text-sm text-muted">
                       {c.visit_pairs.map(([a, b]) => `${a}→${b}`).join(", ") || "—"}
                     </span>
                   </span>
@@ -62,7 +62,7 @@ export default function CandidateList({
                     <ClassificationBadge classification={c.evidence.classification} label={c.evidence.classification_label} />
                   </span>
                   {weak.length > 0 && (
-                    <span className="mt-1.5 block text-xs text-[#f58a8a]">
+                    <span className="mt-1.5 block text-sm text-bad">
                       <span className="font-semibold">Reasons for doubt:</span> {weak.map((w) => w.label).join("; ")}
                     </span>
                   )}

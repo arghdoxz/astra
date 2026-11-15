@@ -1,32 +1,43 @@
-// Shared dark observatory theme for Plotly charts (no plotly import here).
+// Shared plate-archive theme for Plotly charts: ink on paper (no plotly import here).
 
 export const PALETTE = {
-  bg: "#0a0f1c",
-  card: "#111830",
-  border: "#1d2742",
-  text: "#e6ebf5",
-  muted: "#8a97b4",
-  cyan: "#74c7da",
-  amber: "#f2b84b",
-  green: "#59d98e",
-  red: "#f26b6b",
-  magenta: "#e05bd1",
+  paper: "#f1f2f0",
+  ink: "#121416",
+  muted: "#4f565b",
+  grid: "#d2d6d3",
+  axis: "#4f565b",
+  border: "#b3b9b6",
+  blue: "#1f3f8a",
+  pencil: "#b42d1c",
+  moss: "#2f6430",
+  ochre: "#8a5a06",
+  plum: "#7a3a6a",
 };
 
-/** One colour per visit (colour-blind-friendly-ish, distinct on dark). */
-export const VISIT_COLORS = ["#74c7da", "#f2b84b", "#e05bd1", "#59d98e", "#8fa8ff", "#f2866b", "#c79bff", "#e6ebf5"];
+/** One colour per visit; each holds at least 3:1 contrast on the paper (#f1f2f0). */
+export const VISIT_COLORS = ["#121416", "#b42d1c", "#1f3f8a", "#2f6430", "#8a5a06", "#7a3a6a", "#3f5f73", "#6b4a2b"];
 export const visitColor = (index: number) => VISIT_COLORS[((index % VISIT_COLORS.length) + VISIT_COLORS.length) % VISIT_COLORS.length];
 
 /** One colour per detector D1..D6. */
 export const DET_COLORS: Record<number, string> = {
-  1: "#8fa8ff",
-  2: "#74c7da",
-  3: "#59d98e",
-  4: "#f2b84b",
-  5: "#f2866b",
-  6: "#e05bd1",
+  1: "#1f3f8a",
+  2: "#2f6430",
+  3: "#8a5a06",
+  4: "#b42d1c",
+  5: "#7a3a6a",
+  6: "#121416",
 };
-export const detColor = (d: number) => DET_COLORS[d] ?? "#e6ebf5";
+export const detColor = (d: number) => DET_COLORS[d] ?? "#121416";
+
+/** Plotly cannot read CSS variables, so resolve the loaded UI and typewriter faces from the document. */
+function fontStacks(): { ui: string; type: string } {
+  const fallbackUi = "Public Sans, ui-sans-serif, system-ui, sans-serif";
+  const fallbackType = "Courier Prime, ui-monospace, monospace";
+  if (typeof document === "undefined") return { ui: fallbackUi, type: fallbackType };
+  const cs = getComputedStyle(document.body);
+  const type = cs.getPropertyValue("--font-type").trim();
+  return { ui: cs.fontFamily || fallbackUi, type: type ? `${type}, ui-monospace, monospace` : fallbackType };
+}
 
 /** Fallback SPHEREx detector coverage in µm (used only if the spectrum channel grid is empty). */
 export const FALLBACK_DET_RANGES: Record<number, [number, number]> = {
@@ -41,31 +52,35 @@ export const FALLBACK_DET_RANGES: Record<number, [number, number]> = {
 export const TRANSPARENT = "rgba(0,0,0,0)";
 
 export function axisBase(title: string, extra: Record<string, unknown> = {}): Record<string, unknown> {
+  const f = fontStacks();
   return {
-    title: { text: title, font: { size: 11, color: PALETTE.muted }, standoff: 6 },
-    gridcolor: PALETTE.border,
-    zerolinecolor: PALETTE.border,
-    linecolor: PALETTE.border,
-    tickfont: { size: 10, color: PALETTE.muted },
+    title: { text: title, font: { size: 12, color: PALETTE.muted, family: f.ui }, standoff: 6 },
+    gridcolor: PALETTE.grid,
+    zerolinecolor: PALETTE.axis,
+    linecolor: PALETTE.axis,
+    ticks: "outside",
+    tickcolor: PALETTE.axis,
+    tickfont: { size: 12, color: PALETTE.ink, family: f.type },
     automargin: true,
     ...extra,
   };
 }
 
 export function baseLayout(extra: Record<string, unknown> = {}): Record<string, unknown> {
+  const f = fontStacks();
   return {
     paper_bgcolor: TRANSPARENT,
-    plot_bgcolor: TRANSPARENT,
-    font: { color: PALETTE.text, size: 11 },
+    plot_bgcolor: PALETTE.paper,
+    font: { color: PALETTE.ink, size: 12, family: f.ui },
     margin: { l: 52, r: 10, t: 22, b: 44 },
     autosize: true,
     hovermode: "closest",
-    hoverlabel: { bgcolor: PALETTE.card, bordercolor: PALETTE.border, font: { color: PALETTE.text, size: 11 } },
+    hoverlabel: { bgcolor: PALETTE.paper, bordercolor: PALETTE.ink, font: { color: PALETTE.ink, size: 12, family: f.type } },
     legend: {
       orientation: "h",
       y: -0.2,
       x: 0,
-      font: { size: 10, color: PALETTE.muted },
+      font: { size: 12, color: PALETTE.ink, family: f.ui },
       bgcolor: TRANSPARENT,
     },
     ...extra,

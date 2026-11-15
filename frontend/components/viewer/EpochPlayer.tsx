@@ -141,13 +141,14 @@ export default function EpochPlayer({
   const [bright, setBright] = useState(0);
   const [contrast, setContrast] = useState(1);
   const [gamma, setGamma] = useState(1);
+  const [negative, setNegative] = useState(true);
   const [view, setView] = useState({ zoom: 1, panX: 0, panY: 0 });
   const [size, setSize] = useState({ w: 0, h: 0 });
 
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const offRef = useRef<HTMLCanvasElement | null>(null);
-  const lastImgRef = useRef<{ src: CanvasImageSource; w: number; h: number } | null>(null);
+  const lastImgRef = useRef<{ src: CanvasImageSource; w: number; h: number; invert: boolean } | null>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const gesture = useRef<{ dist: number } | null>(null);
   const frameCb = useRef(onFrameChange);
@@ -338,11 +339,14 @@ export default function EpochPlayer({
     for (let i = 0; i < 256; i++) {
       let v = (i / 255 - 0.5) * contrast + 0.5 + bright;
       v = Math.min(1, Math.max(0, v));
-      l[i] = Math.round(Math.pow(v, 1 / gamma) * 255);
+      const out = Math.round(Math.pow(v, 1 / gamma) * 255);
+      l[i] = negative ? 255 - out : out;
     }
     return l;
-  }, [bright, contrast, gamma]);
+  }, [bright, contrast, gamma, negative]);
   const lutActive = bright !== 0 || contrast !== 1 || gamma !== 1;
+  // Inversion rides on the same lookup table, so negative mode also needs the pixel path.
+  const needsLut = lutActive || negative;
 
   /* ---------------------------------------------------------- drawing */
   const loadedNow = item?.url ? imageCache.get(item.url) : undefined;
@@ -361,10 +365,40 @@ export default function EpochPlayer({
     }
     const ctx = canvas.getContext("2d");
     const sans = getComputedStyle(canvas).fontFamily || "system-ui, sans-serif";
-    const mono = "ui-monospace, Menlo, Consolas, monospace";
+    const mono = `"Courier Prime", ui-monospace, monospace`;
     if (!ctx) return;
+
+    // Palette. `lightFrame` is true when the pixels under the overlays are pale (negative gray frames).
+    const lightFrame = negative && (item?.gray ?? true);
+    const P = lightFrame
+      ? { pencil: "#b42d1c", plum: "#7a3a6a", ink: "rgba(18,20,22,0.7)" }
+      : { pencil: "#ff6b57", plum: "#e0a3d2", ink: "rgba(241,242,240,0.8)" };
+    // Label boxes follow the canvas ground so they stay legible over empty areas as well as over the image.
+    const L = negative
+      ? { box: "#f1f2f0", border: "#4f565b", text: "#121416", muted: "#4f565b" }
+      : { box: "#0b0c0e", border: "#8a9298", text: "#f1f2f0", muted: "#b8bec2" };
+    const label = (text: string, x: number, y: number, align: CanvasTextAlign, font: string) => {
+      ctx.font = font;
+      const tw = ctx.measureText(text).width;
+      const bx = align === "right" ? x - tw - 6 : align === "center" ? x - tw / 2 - 5 : x - 5;
+      ctx.fillStyle = L.box;
+      ctx.fillRect(bx, y - 10, tw + 10, 20);
+      ctx.strokeStyle = L.border;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      ctx.strokeRect(bx + 0.5, y - 9.5, tw + 9, 19);
+      ctx.fillStyle = L.text;
+      ctx.textAlign = align;
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, x, y + 1);
+      ctx.textBaseline = "alphabetic";
+    };
+
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = "#05070d";
+    ctx.filter = "none";
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.fillStyle = negative ? "#eef0ee" : "#000000";
     ctx.fillRect(0, 0, W, H);
     ctx.imageSmoothingEnabled = false;
 
@@ -393,7 +427,10 @@ export default function EpochPlayer({
       } else if (loaded) {
         const img = loaded.img;
         let src: CanvasImageSource = img;
-        if (item.gray && lutActive && !loaded.tainted) {
+        // Negative mode: the display LUT also inverts, so black stars land on pale glass. Frames whose pixels
+        // cannot be read (cross-origin, no CORS) fall back to a canvas invert filter instead.
+        let inverted = false;
+        if (item.gray && needsLut && !loaded.tainted) {
           try {
             let off = offRef.current;
             if (!off) off = offRef.current = document.createElement("canvas");
@@ -411,18 +448,24 @@ export default function EpochPlayer({
               }
               octx.putImageData(data, 0, 0);
               src = off;
+              inverted = negative;
             }
           } catch {
             src = img;
           }
         }
+        const filterInvert = item.gray && negative && !inverted;
+        if (filterInvert) ctx.filter = "invert(1)";
         ctx.drawImage(src, left, top, rw, rh);
-        lastImgRef.current = { src, w: rw, h: rh };
+        ctx.filter = "none";
+        lastImgRef.current = { src, w: rw, h: rh, invert: filterInvert };
         drewImage = true;
       } else if (lastImgRef.current) {
         // still loading: keep the previous frame on screen (no flicker during playback)
         ctx.globalAlpha = 0.5;
+        if (lastImgRef.current.invert) ctx.filter = "invert(1)";
         ctx.drawImage(lastImgRef.current.src, left, top, rw, rh);
+        ctx.filter = "none";
         ctx.globalAlpha = 1;
       }
     }
@@ -434,31 +477,28 @@ export default function EpochPlayer({
     }
 
     // frame outline
-    ctx.strokeStyle = "rgba(138,151,180,0.35)";
+    ctx.strokeStyle = negative ? "rgba(18,20,22,0.45)" : "rgba(241,242,240,0.35)";
     ctx.lineWidth = 1;
     ctx.setLineDash([]);
     ctx.strokeRect(left + 0.5, top + 0.5, rw, rh);
 
     const center = { x: W / 2, y: H / 2 };
     if (message) {
-      ctx.fillStyle = "#0a0f1c";
+      ctx.fillStyle = negative ? "#f1f2f0" : "#0b0c0e";
       ctx.fillRect(left, top, rw, rh);
       ctx.setLineDash([6, 5]);
-      ctx.strokeStyle = "rgba(138,151,180,0.45)";
+      ctx.strokeStyle = negative ? "rgba(18,20,22,0.55)" : "rgba(241,242,240,0.5)";
       ctx.strokeRect(left + 0.5, top + 0.5, rw, rh);
       ctx.setLineDash([]);
       ctx.textAlign = "center";
-      ctx.fillStyle = "#e6ebf5";
+      ctx.fillStyle = L.text;
       ctx.font = `500 14px ${sans}`;
       wrapText(ctx, message, center.x, center.y - 4, Math.min(W - 40, 360), 18);
-      ctx.fillStyle = "#8a97b4";
+      ctx.fillStyle = L.muted;
       ctx.font = `12px ${sans}`;
       ctx.fillText("Playback continues with the next frame.", center.x, center.y + 34);
     } else if (!loadedNow && item?.url) {
-      ctx.textAlign = "center";
-      ctx.fillStyle = "#8a97b4";
-      ctx.font = `12px ${sans}`;
-      ctx.fillText("Loading frame…", center.x, H - 40);
+      label("Loading frame…", center.x, H - 40, "center", `12px ${mono}`);
     }
 
     // --- overlays
@@ -467,7 +507,7 @@ export default function EpochPlayer({
     if (overlays.crosshair) {
       const cx = gx(grid.crpix[0] - 1);
       const cy = gy(grid.crpix[1] - 1);
-      ctx.strokeStyle = "rgba(230,235,245,0.55)";
+      ctx.strokeStyle = P.ink;
       ctx.lineWidth = 1;
       const gap = 8;
       const len = 14;
@@ -479,17 +519,17 @@ export default function EpochPlayer({
       ctx.stroke();
     }
 
-    // predicted track
+    // predicted track (grease pencil)
     if (overlays.track && inv.track.length) {
       const pts = [...inv.track].sort((a, b) => a.mjd - b.mjd);
-      ctx.strokeStyle = "rgba(116, 199, 218,0.85)";
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = P.pencil;
+      ctx.lineWidth = 1.75;
       ctx.setLineDash([5, 4]);
       ctx.beginPath();
       pts.forEach((p, i) => (i === 0 ? ctx.moveTo(gx(p.x), gy(p.y)) : ctx.lineTo(gx(p.x), gy(p.y))));
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = "rgba(116, 199, 218,0.9)";
+      ctx.fillStyle = P.pencil;
       for (const p of pts) {
         ctx.beginPath();
         ctx.arc(gx(p.x), gy(p.y), 2.5, 0, Math.PI * 2);
@@ -498,25 +538,23 @@ export default function EpochPlayer({
       if (curMjd !== undefined) {
         let best = pts[0];
         for (const p of pts) if (Math.abs(p.mjd - curMjd) < Math.abs(best.mjd - curMjd)) best = p;
-        ctx.strokeStyle = "#74c7da";
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = P.pencil;
+        ctx.lineWidth = 2.25;
         ctx.beginPath();
         ctx.arc(gx(best.x), gy(best.y), 9, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.fillStyle = "#74c7da";
-        ctx.font = `11px ${mono}`;
-        ctx.textAlign = "left";
-        ctx.fillText(`predicted ${mjdToISODate(best.mjd)}`, gx(best.x) + 13, gy(best.y) - 11);
+        label(`predicted ${mjdToISODate(best.mjd)}`, gx(best.x) + 15, gy(best.y) - 16, "left", `12px ${mono}`);
       }
     }
 
-    // measured centroids
+    // measured centroids (pencil crosses; the current visit's is heavier)
     if (overlays.measured && inv.astrometry?.measured?.length) {
       for (const m of inv.astrometry.measured) {
         const p = skyToGrid(grid, m.ra, m.dec);
         const here = item?.visitId && m.visit_id === item.visitId;
-        ctx.strokeStyle = here ? "#c58ab8" : "rgba(224,90,209,0.55)";
-        ctx.lineWidth = here ? 2.5 : 1.3;
+        ctx.strokeStyle = P.pencil;
+        ctx.globalAlpha = here ? 1 : 0.7;
+        ctx.lineWidth = here ? 2.75 : 1.5;
         const s = here ? 7 : 5;
         const x = gx(p.x);
         const y = gy(p.y);
@@ -524,44 +562,47 @@ export default function EpochPlayer({
         ctx.moveTo(x - s, y - s); ctx.lineTo(x + s, y + s);
         ctx.moveTo(x - s, y + s); ctx.lineTo(x + s, y - s);
         ctx.stroke();
+        ctx.globalAlpha = 1;
       }
     }
 
-    // candidates
+    // candidates (plum circles)
     if (overlays.candidates && inv.candidates?.length) {
-      ctx.font = `11px ${mono}`;
-      ctx.textAlign = "left";
       for (const c of inv.candidates) {
         const sel = selectedCandidate?.id === c.id;
-        ctx.strokeStyle = sel ? "#f2b84b" : "rgba(242,184,75,0.6)";
-        ctx.lineWidth = sel ? 2.5 : 1.3;
+        ctx.strokeStyle = P.plum;
+        ctx.globalAlpha = sel ? 1 : 0.8;
+        ctx.lineWidth = sel ? 2.75 : 1.5;
         ctx.beginPath();
         ctx.arc(gx(c.x), gy(c.y), sel ? 11 : 8, 0, Math.PI * 2);
         ctx.stroke();
-        if (sel) {
-          ctx.fillStyle = "#f2b84b";
-          ctx.fillText(c.id, gx(c.x) + 14, gy(c.y) - 12);
-        }
+        ctx.globalAlpha = 1;
+        if (sel) label(c.id, gx(c.x) + 16, gy(c.y) - 16, "left", `12px ${mono}`);
       }
     }
 
     // compass (N up, E left)
     {
-      const ox = 40;
-      const oy = 46;
-      ctx.strokeStyle = "rgba(230,235,245,0.8)";
-      ctx.fillStyle = "rgba(230,235,245,0.9)";
+      const ox = 44;
+      const oy = 54;
+      ctx.fillStyle = L.box;
+      ctx.fillRect(ox - 42, oy - 46, 56, 62);
+      ctx.strokeStyle = L.border;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(ox - 41.5, oy - 45.5, 55, 61);
+      ctx.strokeStyle = L.text;
+      ctx.fillStyle = L.text;
       ctx.lineWidth = 1.3;
       ctx.beginPath();
-      ctx.moveTo(ox, oy); ctx.lineTo(ox, oy - 26);
-      ctx.moveTo(ox - 4, oy - 21); ctx.lineTo(ox, oy - 26); ctx.lineTo(ox + 4, oy - 21);
-      ctx.moveTo(ox, oy); ctx.lineTo(ox - 26, oy);
-      ctx.moveTo(ox - 21, oy - 4); ctx.lineTo(ox - 26, oy); ctx.lineTo(ox - 21, oy + 4);
+      ctx.moveTo(ox, oy); ctx.lineTo(ox, oy - 24);
+      ctx.moveTo(ox - 4, oy - 19); ctx.lineTo(ox, oy - 24); ctx.lineTo(ox + 4, oy - 19);
+      ctx.moveTo(ox, oy); ctx.lineTo(ox - 24, oy);
+      ctx.moveTo(ox - 19, oy - 4); ctx.lineTo(ox - 24, oy); ctx.lineTo(ox - 19, oy + 4);
       ctx.stroke();
-      ctx.font = `600 11px ${sans}`;
+      ctx.font = `700 12px ${mono}`;
       ctx.textAlign = "center";
-      ctx.fillText("N", ox, oy - 31);
-      ctx.fillText("E", ox - 33, oy + 4);
+      ctx.fillText("N", ox, oy - 29);
+      ctx.fillText("E", ox - 32, oy + 4);
     }
 
     // scale bar: 1 arcmin
@@ -570,32 +611,31 @@ export default function EpochPlayer({
       if (len > 24 && len < W * 0.7) {
         const x0 = 14;
         const y0 = H - 16;
-        ctx.strokeStyle = "rgba(230,235,245,0.9)";
+        ctx.fillStyle = L.box;
+        ctx.fillRect(x0 - 6, y0 - 26, len + 12, 38);
+        ctx.strokeStyle = L.border;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x0 - 5.5, y0 - 25.5, len + 11, 37);
+        ctx.strokeStyle = L.text;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(x0, y0); ctx.lineTo(x0 + len, y0);
         ctx.moveTo(x0, y0 - 4); ctx.lineTo(x0, y0 + 4);
         ctx.moveTo(x0 + len, y0 - 4); ctx.lineTo(x0 + len, y0 + 4);
         ctx.stroke();
-        ctx.fillStyle = "rgba(230,235,245,0.9)";
-        ctx.font = `11px ${mono}`;
-        ctx.textAlign = "left";
-        ctx.fillText("1′", x0 + len / 2 - 5, y0 - 8);
+        ctx.fillStyle = L.text;
+        ctx.font = `12px ${mono}`;
+        ctx.textAlign = "center";
+        ctx.fillText("1′", x0 + len / 2, y0 - 9);
       }
     }
 
     // frame label (top right)
     if (item) {
-      ctx.textAlign = "right";
-      ctx.font = `500 12px ${mono}`;
-      const label = `${mode === "diff" ? item.label : mjdToISODate(item.mjd)} · ${detectorShort(item.detector)}`;
-      ctx.fillStyle = "rgba(5,7,13,0.65)";
-      const tw = ctx.measureText(label).width;
-      ctx.fillRect(W - tw - 20, 8, tw + 14, 22);
-      ctx.fillStyle = "#e6ebf5";
-      ctx.fillText(label, W - 13, 24);
+      const text = `${mode === "diff" ? item.label : mjdToISODate(item.mjd)} · ${detectorShort(item.detector)}`;
+      label(text, W - 14, 20, "right", `700 12px ${mono}`);
     }
-  }, [grid, size, view, item, tick, overlays, lut, lutActive, inv, selectedCandidate, loadedNow, flagsLoaded, mode]);
+  }, [grid, size, view, item, tick, overlays, lut, needsLut, negative, inv, selectedCandidate, loadedNow, flagsLoaded, mode]);
 
   /* ---------------------------------------------------------- zoom / pan */
   const zoomAt = useCallback(
@@ -693,7 +733,6 @@ export default function EpochPlayer({
     return (
       <div className="card flex aspect-square max-h-[60vh] w-full items-center justify-center p-6 text-center text-sm text-muted">
         <div>
-          <div className="mx-auto mb-3 h-5 w-5 animate-pulse rounded-full bg-accent/60" aria-hidden />
           Waiting for the pixel grid and frames… the viewer appears as soon as the first stacks are rendered.
         </div>
       </div>
@@ -740,7 +779,7 @@ export default function EpochPlayer({
           onDoubleClick={() => setView({ zoom: 1, panX: 0, panY: 0 })}
         />
         {mode === "diff" && (
-          <div className="pointer-events-none absolute bottom-2 right-3 max-w-[70%] rounded bg-bg/75 px-2 py-1 text-right text-[11px] leading-tight text-fg">
+          <div className="pointer-events-none absolute bottom-2 right-3 max-w-[70%] border border-line bg-panel px-2 py-1 text-right text-xs leading-tight text-fg">
             <div className="mono">Z = (B−A)/σ, ±8σ</div>
             <div className="text-muted">{diffMethod === "simple" ? "Simple subtraction" : "Gaussian PSF-matched (approximation, not ZOGY)"}</div>
           </div>
@@ -842,6 +881,14 @@ export default function EpochPlayer({
                 {MODE_LABELS[m]}
               </button>
             ))}
+          </div>
+          <div role="group" aria-label="Image polarity" className="flex flex-wrap gap-1">
+            <button type="button" className="btn btn-sm" aria-pressed={negative} title="Black stars on pale glass, as plates are read on a light box" onClick={() => setNegative(true)}>
+              Negative
+            </button>
+            <button type="button" className="btn btn-sm" aria-pressed={!negative} title="White stars on a black sky" onClick={() => setNegative(false)}>
+              Positive
+            </button>
           </div>
           <div role="group" aria-label="Detector" className="flex flex-wrap gap-1">
             {[1, 2, 3, 4, 5, 6].map((d) => (
@@ -963,11 +1010,11 @@ export default function EpochPlayer({
               <button type="button" className="btn btn-sm" onClick={resetDisplay} disabled={!lutActive}>
                 Reset
               </button>
-              <span>Applied in your browser to image frames only (not difference maps). The underlying stretch is unchanged.</span>
+              <span>Applied in your browser to image frames only (not difference maps or flags). The underlying stretch is unchanged.</span>
             </div>
           </details>
         )}
-        <p className="text-[11px] text-muted">
+        <p className="text-xs text-muted">
           Click the image, then Space to play/pause, ←/→ to step, +/− to zoom, 0 to fit. Wheel or pinch to zoom, drag to pan.
         </p>
       </div>

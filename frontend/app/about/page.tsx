@@ -30,8 +30,8 @@ const CREDITS = [
 export default function AboutPage() {
   return (
     <main className="page py-8">
-      <article className="prose-astra mx-auto max-w-3xl">
-        <h1 className="text-2xl font-semibold">About ASTRA</h1>
+      <article className="prose-astra">
+        <h1 className="serif text-3xl font-semibold">About ASTRA</h1>
         <p className="mt-3">
           ASTRA is a web tool for investigating real infrared observations from NASA&apos;s SPHEREx space telescope over time. Give it a name or a position and it retrieves every public SPHEREx exposure of that
           spot, stacks them into visits roughly six months apart, and shows how the sky changed: which sources moved, which varied, what their 0.75–5 µm spectra look like, and how that compares with what
@@ -71,7 +71,7 @@ export default function AboutPage() {
         <h2>Demo snapshots and development placeholders</h2>
         <p>
           When the live service is unavailable, ASTRA can show a precomputed snapshot of real SPHEREx data for library targets that have one, clearly labelled with the date it was generated. During development a
-          placeholder bundle with invented numbers may be shown; it carries a red &ldquo;Development placeholder — not real data&rdquo; banner and is never used for results.
+          placeholder bundle with invented numbers may be shown; it carries a red &ldquo;Development placeholder: not real data&rdquo; banner and is never used for results.
         </p>
 
         <h2>AI disclosure</h2>

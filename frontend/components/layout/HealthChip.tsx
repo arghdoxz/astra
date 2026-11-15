@@ -48,21 +48,24 @@ export default function HealthChip() {
     setRetryKey((k) => k + 1);
   }
 
-  let dot = "bg-muted";
-  let label = "Connecting to API…";
+  let tone = "text-muted";
+  let label = "Connecting to the archive server…";
   let title = "Checking the ASTRA backend (a sleeping free-tier server can take up to a minute to wake).";
-  if (state.kind === "checking" && state.attempt > 0) label = "Waking API…";
+  if (state.kind === "checking" && state.attempt > 0) label = "Waking the archive server…";
   if (state.kind === "ok") {
-    dot = "bg-good";
-    label = "API online";
+    tone = "text-good";
+    label = "Live server: online";
     title = Object.entries(state.health.services ?? {}).map(([k, v]) => `${k}: ${v}`).join("\n") || "API online";
   } else if (state.kind === "degraded") {
-    dot = "bg-warn";
-    label = "API degraded";
+    tone = "text-warn";
+    const bad = Object.entries(state.health.services ?? {})
+      .filter(([, v]) => v === "down" || v === "degraded")
+      .map(([k]) => k);
+    label = `Live server: online, ${bad.join(", ") || "some services"} not answering`;
     title = Object.entries(state.health.services ?? {}).map(([k, v]) => `${k}: ${v}`).join("\n");
   } else if (state.kind === "offline") {
-    dot = "bg-warn";
-    label = "API offline — demo snapshots available";
+    tone = "text-warn";
+    label = "Live server offline. Saved demo plates still work. Retry";
     title = "The live backend could not be reached. Click to retry. Precomputed demo snapshots still work for library targets that have one.";
   }
 
@@ -72,10 +75,10 @@ export default function HealthChip() {
       onClick={retry}
       title={title}
       aria-live="polite"
-      className="inline-flex max-w-full items-center gap-2 rounded-sm border border-line bg-panel mono px-3 py-1 text-xs text-muted transition-colors hover:text-fg cursor-pointer"
+      disabled={state.kind !== "offline"}
+      className={`max-w-full self-start text-left text-sm disabled:cursor-default ${tone} ${state.kind === "offline" ? "cursor-pointer underline" : ""}`}
     >
-      <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${dot} ${state.kind === "checking" ? "animate-pulse" : ""}`} />
-      <span className="truncate">{label}</span>
+      {label}
     </button>
   );
 }

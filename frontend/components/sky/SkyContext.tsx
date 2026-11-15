@@ -29,13 +29,16 @@ const SURVEYS: { id: string; url: string; label: string }[] = [
 const surveyUrl = (id: string) => SURVEYS.find((s) => s.id === id)?.url ?? id;
 
 const LAYERS = [
-  { key: "fov", label: "SPHEREx field", swatch: "#74c7da", dashed: true },
-  { key: "track", label: "Predicted track", swatch: "#e6ebf5", dashed: true },
-  { key: "gaia", label: "Gaia matches", swatch: "#74c7da", dashed: false },
-  { key: "simbad", label: "SIMBAD matches", swatch: "#f2b84b", dashed: false },
-  { key: "cands", label: "Field candidates", swatch: "#e05bd1", dashed: false },
+  { key: "fov", label: "SPHEREx field", swatch: "#121416", dashed: true },
+  { key: "track", label: "Predicted track", swatch: "#b42d1c", dashed: true },
+  { key: "gaia", label: "Gaia matches", swatch: "#1f3f8a", dashed: false },
+  { key: "simbad", label: "SIMBAD matches", swatch: "#8a5a06", dashed: false },
+  { key: "cands", label: "Field candidates", swatch: "#7a3a6a", dashed: false },
 ] as const;
 type LayerKey = (typeof LAYERS)[number]["key"];
+
+// Overlay inks drawn on the dark survey print (the legend swatches above are the same hues, darkened for the paper).
+const SKY_INK = { paper: "#f1f2f0", pencil: "#ff6b57", catalogue: "#8fb0ff", ochre: "#f2b84b", plum: "#e0a3d2" };
 
 function esc(s: unknown): string {
   return String(s ?? "")
@@ -182,7 +185,7 @@ export default function SkyContext({
       aladin.removeOverlays();
 
       // Target position (resolved/requested).
-      const tgt = A.catalog({ name: "Target", shape: "cross", color: "#e6ebf5", sourceSize: 18 });
+      const tgt = A.catalog({ name: "Target", shape: "cross", color: SKY_INK.paper, sourceSize: 18 });
       aladin.addCatalog(tgt);
       tgt.addSources([
         A.marker(inv.target.ra, inv.target.dec, {
@@ -200,21 +203,21 @@ export default function SkyContext({
           gridPixToSky(g, g.width - 0.5, g.height - 0.5),
           gridPixToSky(g, -0.5, g.height - 0.5),
         ];
-        const ov = A.graphicOverlay({ name: "SPHEREx field", color: "#74c7da", lineWidth: 1.5, lineDash: [6, 4] });
+        const ov = A.graphicOverlay({ name: "SPHEREx field", color: SKY_INK.paper, lineWidth: 1.5, lineDash: [6, 4] });
         aladin.addOverlay(ov);
         ov.add(A.polygon(corners));
       }
 
       const track = inv.track ?? [];
       if (layers.track && track.length > 0) {
-        const ov = A.graphicOverlay({ name: "Predicted track", color: "#e6ebf5", lineWidth: 2, lineDash: [3, 3] });
+        const ov = A.graphicOverlay({ name: "Predicted track", color: SKY_INK.pencil, lineWidth: 2, lineDash: [3, 3] });
         aladin.addOverlay(ov);
         if (track.length >= 2) ov.add(A.polyline(track.map((p) => [p.ra, p.dec])));
         const v = selectedVisit ? inv.visits.find((x) => x.id === selectedVisit) : undefined;
         const pts = v ? track.filter((p) => p.mjd >= v.mjd_start - 0.6 && p.mjd <= v.mjd_end + 0.6) : [];
-        for (const p of pts.slice(0, 1)) ov.add(A.circle(p.ra, p.dec, 6 / 3600, { color: "#ffffff", lineWidth: 2 }));
+        for (const p of pts.slice(0, 1)) ov.add(A.circle(p.ra, p.dec, 6 / 3600, { color: SKY_INK.paper, lineWidth: 2 }));
         if (track.length === 1) {
-          const m = A.catalog({ name: "Predicted position", shape: "plus", color: "#e6ebf5", sourceSize: 14 });
+          const m = A.catalog({ name: "Predicted position", shape: "plus", color: SKY_INK.pencil, sourceSize: 14 });
           aladin.addCatalog(m);
           m.addSources([A.marker(track[0].ra, track[0].dec, { popupTitle: "Predicted position", popupDesc: "", useMarkerDefaultIcon: false })]);
         }
@@ -231,11 +234,11 @@ export default function SkyContext({
           }),
         );
       };
-      addMatches("gaia", "Gaia DR3", inv.crossmatch?.gaia?.matches ?? [], "circle", "#74c7da", 12);
-      addMatches("simbad", "SIMBAD", inv.crossmatch?.simbad?.matches ?? [], "square", "#f2b84b", 16);
+      addMatches("gaia", "Gaia DR3", inv.crossmatch?.gaia?.matches ?? [], "circle", SKY_INK.catalogue, 12);
+      addMatches("simbad", "SIMBAD", inv.crossmatch?.simbad?.matches ?? [], "square", SKY_INK.ochre, 16);
 
       if (layers.cands && (inv.candidates ?? []).length > 0) {
-        const cat = A.catalog({ name: "Candidates", shape: "circle", color: "#e05bd1", sourceSize: 20 });
+        const cat = A.catalog({ name: "Candidates", shape: "circle", color: SKY_INK.plum, sourceSize: 20 });
         aladin.addCatalog(cat);
         cat.addSources(
           inv.candidates.map((c) =>
@@ -260,12 +263,12 @@ export default function SkyContext({
       title="Sky context"
       subtitle={`Centred on the target, ${(viewFovDeg * 60).toFixed(0)}′ across`}
       right={
-        <label className="flex items-center gap-1.5 text-xs text-[#8a97b4]">
+        <label className="flex items-center gap-1.5 text-xs text-muted">
           <span>Survey</span>
           <select
             value={survey}
             onChange={(e) => setSurvey(e.target.value)}
-            className="rounded-sm border border-[#1d2742] bg-[#0a0f1c] px-2 py-1 text-xs text-[#e6ebf5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]"
+            className="input"
             aria-label="Background survey"
           >
             {SURVEYS.map((s) => (
@@ -288,36 +291,41 @@ export default function SkyContext({
               href={webUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-[#74c7da] underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]"
+              className="font-medium text-accent underline underline-offset-2"
             >
               Open this position in Aladin Lite on the web ↗
             </a>
           </p>
         </EmptyState>
       ) : (
-        <div className="relative">
-          <div
-            ref={hostRef}
-            className="h-[320px] w-full overflow-hidden rounded-sm border border-[#1d2742] bg-[#0a0f1c] sm:h-[420px]"
-            role="region"
-            aria-label="Sky map around the target"
-          />
-          {status === "loading" && (
+        <figure className="border border-line bg-panel p-2">
+          <div className="relative">
             <div
-              role="status"
-              className="pointer-events-none absolute inset-0 flex items-center justify-center text-xs text-[#8a97b4]"
-            >
-              Loading sky map…
-            </div>
-          )}
-        </div>
+              ref={hostRef}
+              className="h-[320px] w-full overflow-hidden border border-fg bg-fg sm:h-[420px]"
+              role="region"
+              aria-label="Sky map around the target"
+            />
+            {status === "loading" && (
+              <div
+                role="status"
+                className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-panel"
+              >
+                Loading sky map…
+              </div>
+            )}
+          </div>
+          <figcaption className="mt-2 text-xs text-muted">
+            Positive print: survey image from {SURVEYS.find((s) => s.id === survey)?.label ?? survey}. Pan and zoom with the mouse.
+          </figcaption>
+        </figure>
       )}
 
       <fieldset className="mt-2">
         <legend className="sr-only">Overlays</legend>
         <div className="flex flex-wrap gap-x-4 gap-y-1">
           {LAYERS.map((l) => (
-            <label key={l.key} className="inline-flex cursor-pointer items-center gap-1.5 text-xs text-[#8a97b4]">
+            <label key={l.key} className="inline-flex cursor-pointer items-center gap-1.5 text-xs text-muted">
               <input
                 type="checkbox"
                 checked={layers[l.key]}
@@ -339,9 +347,9 @@ export default function SkyContext({
 
       <div className="mt-2 space-y-1.5">
         <Note>
-          Background survey imagery is for context — <strong className="text-[#e6ebf5]">not SPHEREx data</strong>. Catalog
+          Background survey imagery is for context — <strong className="text-fg">not SPHEREx data</strong>. Catalog
           markers are associations at their listed separation, not proof of identity.
-          {selectedVisit && inv.track.length > 0 ? ` White ring: predicted position during ${selectedVisit}.` : ""}
+          {selectedVisit && inv.track.length > 0 ? ` Pale ring: predicted position during ${selectedVisit}.` : ""}
         </Note>
       </div>
     </Card>

@@ -86,7 +86,7 @@ This research uses data from the NASA/IPAC Infrared Science Archive, operated by
 
 ## AI disclosure
 - **In the product:** the optional explainer calls Google Gemini. It receives only ASTRA's measured evidence and catalogue results. Its output is validated, and any number it was not given is rejected. All measurements, classifications and confidence tiers come from deterministic code, not from the AI.
-- **In development:** the code and documentation were written with AI coding assistants (Anthropic Claude via Claude Code), directed and reviewed by the team. All scientific results shown in the app come from running that code on real archive data.
+- **In development:** the code and documentation were written with AI coding assistants, directed and reviewed by the team. All scientific results shown in the app come from running that code on real archive data.
 
 ## Honesty statement
 ASTRA never claims discoveries. Simulated or placeholder data is never presented as SPHEREx data: development placeholders carry a red "not real data" banner, and demo bundles are real data labelled with their generation date.

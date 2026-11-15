@@ -8,7 +8,7 @@ const LazyPlot = dynamic(() => import("./PlotlyChart"), {
   loading: () => (
     <div
       role="status"
-      className="flex h-[320px] w-full items-center justify-center rounded-sm border border-dashed border-[#1d2742] text-xs text-[#8a97b4]"
+      className="flex h-[320px] w-full items-center justify-center border border-dashed border-line bg-panel text-sm text-muted"
     >
       Loading plot…
     </div>

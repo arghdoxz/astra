@@ -8,10 +8,10 @@ import { Card, EmptyState, ErrorNote, Note, btnPrimary, errMessage, inputCls } f
 type Verdict = Annotation["verdict"];
 
 const VERDICTS: { value: Verdict; label: string; hint: string; bar: string; sel: string }[] = [
-  { value: "real", label: "Real", hint: "I think this is a genuine astronomical change", bar: "#59d98e", sel: "border-[#59d98e] bg-[#59d98e]/15 text-[#59d98e]" },
-  { value: "artifact", label: "Artifact", hint: "I think this is an instrument or processing artifact", bar: "#f26b6b", sel: "border-[#f26b6b] bg-[#f26b6b]/15 text-[#f58a8a]" },
-  { value: "known", label: "Known object", hint: "I recognise this as a catalogued object", bar: "#74c7da", sel: "border-[#74c7da] bg-[#74c7da]/15 text-[#74c7da]" },
-  { value: "unsure", label: "Unsure", hint: "I cannot tell", bar: "#8a97b4", sel: "border-[#8a97b4] bg-[#8a97b4]/15 text-[#c3cde3]" },
+  { value: "real", label: "Real", hint: "I think this is a genuine astronomical change", bar: "#2f6430", sel: "border-good bg-panel font-semibold text-good outline outline-1 outline-good" },
+  { value: "artifact", label: "Artifact", hint: "I think this is an instrument or processing artifact", bar: "#b42d1c", sel: "border-bad bg-panel font-semibold text-bad outline outline-1 outline-bad" },
+  { value: "known", label: "Known object", hint: "I recognise this as a catalogued object", bar: "#1f3f8a", sel: "border-accent bg-panel font-semibold text-accent outline outline-1 outline-accent" },
+  { value: "unsure", label: "Unsure", hint: "I cannot tell", bar: "#4f565b", sel: "border-fg bg-panel font-semibold text-fg outline outline-1 outline-fg" },
 ];
 
 export default function AnnotationBox({ candidateId }: { candidateId: string }) {
@@ -89,7 +89,7 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
               : "The annotation service could not be reached, so verdicts cannot be read or saved right now."}
             {!demo && (
               <p className="mt-2">
-                <button type="button" className="text-[#74c7da] underline underline-offset-2" onClick={() => void load()}>
+                <button type="button" className="text-accent underline underline-offset-2 hover:text-pencil" onClick={() => void load()}>
                   Try again
                 </button>
               </p>
@@ -108,8 +108,8 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
             title={v.hint}
             disabled={disabled}
             onClick={() => setVerdict(v.value)}
-            className={`rounded-sm border px-2 py-1.5 text-xs font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#74c7da] disabled:cursor-not-allowed disabled:opacity-50 ${
-              verdict === v.value ? v.sel : "border-[#1d2742] bg-[#0a0f1c] text-[#e6ebf5] hover:border-[#74c7da]/50"
+            className={`border px-2 py-2 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pencil disabled:cursor-not-allowed disabled:opacity-50 ${
+              verdict === v.value ? v.sel : "border-line bg-panel text-fg hover:border-fg"
             }`}
           >
             {v.label}
@@ -117,7 +117,7 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
         ))}
       </div>
 
-      <label className="mt-3 block text-xs text-[#8a97b4]">
+      <label className="mt-3 block text-sm text-muted">
         Note (optional)
         <textarea
           value={note}
@@ -130,7 +130,7 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
         />
         <span className="mt-0.5 block text-right tabular-nums">{note.length}/500</span>
       </label>
-      <label className="mt-1 block text-xs text-[#8a97b4]">
+      <label className="mt-1 block text-sm text-muted">
         Name or handle (optional)
         <input
           type="text"
@@ -147,8 +147,8 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
         <button type="button" className={btnPrimary} disabled={disabled || !verdict || busy} onClick={submit}>
           {busy ? "Saving…" : "Submit verdict"}
         </button>
-        {!disabled && !verdict && <span className="text-xs text-[#8a97b4]">Choose a verdict to enable submitting.</span>}
-        {done && <span role="status" className="text-xs text-[#59d98e]">Thank you, your verdict was saved.</span>}
+        {!disabled && !verdict && <span className="text-sm text-muted">Choose a verdict to enable submitting.</span>}
+        {done && <span role="status" className="text-sm text-good">Thank you, your verdict was saved.</span>}
       </div>
       {error && (
         <div className="mt-2">
@@ -156,16 +156,16 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
         </div>
       )}
 
-      {loadState === "loading" && <p className="mt-3 text-xs text-[#8a97b4]">Loading verdicts…</p>}
+      {loadState === "loading" && <p className="mt-3 text-sm text-muted">Loading verdicts…</p>}
       {loadState === "ok" && (
         <div className="mt-4">
-          <h4 className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-[#8a97b4]">Community tally</h4>
+          <h4 className="serif mb-1.5 text-base font-semibold text-fg">Community tally</h4>
           {total === 0 ? (
-            <p className="text-xs text-[#8a97b4]">No verdicts yet. Be the first.</p>
+            <p className="text-sm text-muted">No verdicts yet. Be the first.</p>
           ) : (
             <>
               <div
-                className="flex h-2.5 w-full overflow-hidden rounded-full bg-[#0a0f1c]"
+                className="flex h-3 w-full overflow-hidden border border-line bg-panel2"
                 role="img"
                 aria-label={VERDICTS.map((v) => `${v.label} ${tally[v.value]}`).join(", ")}
               >
@@ -173,28 +173,28 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
                   tally[v.value] > 0 ? <div key={v.value} style={{ width: `${(tally[v.value] / total) * 100}%`, background: v.bar }} /> : null,
                 )}
               </div>
-              <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-[#8a97b4]">
+              <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-sm text-muted">
                 {VERDICTS.map((v) => (
                   <li key={v.value} className="inline-flex items-center gap-1">
-                    <span aria-hidden className="inline-block h-2 w-2 rounded-full" style={{ background: v.bar }} />
-                    {v.label} <span className="tabular-nums text-[#e6ebf5]">{tally[v.value]}</span>
+                    <span aria-hidden className="inline-block h-3 w-3" style={{ background: v.bar }} />
+                    {v.label} <span className="tabular-nums text-fg">{tally[v.value]}</span>
                   </li>
                 ))}
               </ul>
             </>
           )}
           {recent.some((a) => a.note) && (
-            <ul className="mt-3 space-y-1.5">
+            <ul className="mt-3 divide-y divide-line border-t border-line">
               {recent
                 .filter((a) => a.note)
                 .map((a) => (
-                  <li key={a.id} className="rounded-sm border border-[#1d2742] bg-[#0a0f1c]/60 px-2.5 py-1.5 text-xs">
-                    <span className="font-medium text-[#e6ebf5]">{VERDICTS.find((v) => v.value === a.verdict)?.label ?? a.verdict}</span>
-                    <span className="text-[#8a97b4]">
+                  <li key={a.id} className="py-2 text-sm">
+                    <span className="font-medium text-fg">{VERDICTS.find((v) => v.value === a.verdict)?.label ?? a.verdict}</span>
+                    <span className="text-muted">
                       {" "}
                       · {a.author || "anonymous"} · {a.created_at.slice(0, 10)}
                     </span>
-                    <p className="mt-0.5 whitespace-pre-wrap break-words text-[#c3cde3]">{a.note}</p>
+                    <p className="mt-0.5 whitespace-pre-wrap break-words text-fg">{a.note}</p>
                   </li>
                 ))}
             </ul>

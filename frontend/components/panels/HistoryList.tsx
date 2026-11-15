@@ -113,32 +113,32 @@ export default function HistoryList() {
     };
   }, []);
 
-  if (entries === null) return <p role="status" className="text-xs text-[#8a97b4]">Loading recent investigations…</p>;
+  if (entries === null) return <p role="status" className="text-sm text-muted">Loading recent investigations…</p>;
 
   return (
     <div>
       {serverDown && (
-        <p className="mb-2 text-xs text-[#f2b84b]">
+        <p className="mb-2 text-sm text-warn">
           The ASTRA service could not be reached; showing only investigations remembered in this browser.
         </p>
       )}
       {entries.length === 0 ? (
         <EmptyState title="No recent investigations">Search for a target or open a demo target to start one.</EmptyState>
       ) : (
-        <ul className="divide-y divide-[#1d2742] rounded-sm border border-[#1d2742] bg-[#111830]">
+        <ul className="divide-y divide-line border border-line bg-panel">
           {entries.map((e) => (
             <li key={`${e.source}-${e.id}`}>
               <Link
                 href={href(e)}
-                className="flex flex-col gap-1 px-3 py-2.5 hover:bg-[#74c7da]/5 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#74c7da]"
+                className="flex flex-col gap-1 px-3 py-2.5 hover:bg-panel2 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-pencil"
               >
                 <span className="flex flex-wrap items-baseline justify-between gap-x-3">
-                  <span className="text-sm font-medium text-[#e6ebf5]">{e.name || "Unnamed position"}</span>
-                  <span className="text-xs text-[#8a97b4]">
+                  <span className="text-sm font-medium text-fg">{e.name || "Unnamed position"}</span>
+                  <span className="text-sm text-muted">
                     {e.at ? e.at.slice(0, 16).replace("T", " ") : ""} {e.source === "browser" ? "· this browser" : ""}
                   </span>
                 </span>
-                <span className="text-xs tabular-nums text-[#8a97b4]">
+                <span className="text-sm tabular-nums text-muted">
                   {formatRA(e.ra)} {formatDec(e.dec)} · {e.fov}′ field
                 </span>
                 {(e.classification || e.confidence) && (

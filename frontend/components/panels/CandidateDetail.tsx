@@ -16,7 +16,7 @@ function Thumb({ src, label }: { src: string; label: string }) {
   return (
     <figure className="w-[104px] shrink-0">
       {failed ? (
-        <div className="flex aspect-square w-full items-center justify-center rounded border border-dashed border-[#1d2742] px-1 text-center text-[10px] text-[#8a97b4]">
+        <div className="flex aspect-square w-full items-center justify-center border border-dashed border-line px-1 text-center text-xs text-muted">
           image unavailable
         </div>
       ) : (
@@ -28,11 +28,11 @@ function Thumb({ src, label }: { src: string; label: string }) {
           height={104}
           loading="lazy"
           onError={() => setFailed(true)}
-          className="aspect-square w-full rounded border border-[#1d2742] bg-[#0a0f1c] object-cover"
+          className="negative aspect-square w-full border border-line bg-panel2 object-cover"
           style={{ imageRendering: "pixelated" }}
         />
       )}
-      <figcaption className="mt-0.5 text-center text-[11px] text-[#8a97b4]">{label}</figcaption>
+      <figcaption className="mt-0.5 text-center text-sm text-muted">{label}</figcaption>
     </figure>
   );
 }
@@ -58,7 +58,7 @@ export default function CandidateDetail({ inv, candidate }: { inv: Investigation
 
         <SectionTitle>Cutouts</SectionTitle>
         {c.thumbnails.length === 0 ? (
-          <p className="text-xs text-[#8a97b4]">No thumbnails were generated for this candidate.</p>
+          <p className="text-sm text-muted">No thumbnails were generated for this candidate.</p>
         ) : (
           <div className="flex gap-2 overflow-x-auto pb-1">
             {c.thumbnails.map((t) => (
@@ -71,14 +71,14 @@ export default function CandidateDetail({ inv, candidate }: { inv: Investigation
           <>
             <SectionTitle>Motion estimate</SectionTitle>
             {motion ? (
-              <p className="text-xs leading-relaxed text-[#e6ebf5]">
+              <p className="text-sm leading-relaxed text-fg">
                 µα* ≈ {num(motion.pm_ra, 0)} mas/yr, µδ ≈ {num(motion.pm_dec, 0)} mas/yr (≈ {num(speed, 0)} mas/yr toward
                 position angle {num(pa, 0)}° east of north).{" "}
-                <span className="text-[#f2b84b]">Rough, from dipole separation</span>: the pair of positive and negative
+                <span className="text-warn">Rough, from dipole separation</span>: the pair of positive and negative
                 residuals is assumed to be one source that moved, which has not been verified.
               </p>
             ) : (
-              <p className="text-xs text-[#8a97b4]">No motion estimate could be derived for this dipole.</p>
+              <p className="text-sm text-muted">No motion estimate could be derived for this dipole.</p>
             )}
           </>
         )}
@@ -86,7 +86,7 @@ export default function CandidateDetail({ inv, candidate }: { inv: Investigation
         <SectionTitle hint="Detections are grouped across detectors and visit pairs; recurrence is what separates candidates from noise.">
           Where it was seen
         </SectionTitle>
-        <p className="text-xs text-[#e6ebf5]">
+        <p className="text-sm text-fg">
           Detectors {c.detectors.map((d) => `D${d}`).join(", ") || "—"}; visit pairs{" "}
           {c.visit_pairs.map(([a, b]) => `${a}→${b}`).join(", ") || "—"}.
         </p>
@@ -95,19 +95,19 @@ export default function CandidateDetail({ inv, candidate }: { inv: Investigation
       <EvidencePanel evidence={c.evidence} title="Evidence for this candidate" />
 
       <Card title="Catalog associations" subtitle="Nearby catalogued objects; associations only, not proof of identity">
-        <div className="space-y-3">
+        <div className="divide-y divide-line [&>div]:py-3 first:[&>div]:pt-0">
           {SERVICES.map((s) => {
             const r = c.crossmatch?.[s.key];
             return (
               <div key={s.key}>
                 <div className="mb-1 flex flex-wrap items-center gap-2">
-                  <h4 className="text-xs font-semibold text-[#e6ebf5]">{s.label}</h4>
+                  <h4 className="serif text-base font-semibold text-fg">{s.label}</h4>
                   <StatusChip status={r?.status ?? "unavailable"} message={r?.message} />
                 </div>
                 {r?.status === "ok" ? (
                   <MatchTable matches={r.matches} service={s.key} />
                 ) : (
-                  <p className="text-xs text-[#f2b84b]">{r?.message ?? "Unavailable: this check is missing."}</p>
+                  <p className="text-sm text-warn">{r?.message ?? "Unavailable: this check is missing."}</p>
                 )}
               </div>
             );

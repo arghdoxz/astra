@@ -65,7 +65,7 @@ export default function AiInvestigator({
         </div>
       )}
 
-      <label className="block text-xs text-[#8a97b4]">
+      <label className="block text-sm text-muted">
         Optional question
         <input
           type="text"
@@ -87,7 +87,7 @@ export default function AiInvestigator({
           {busy ? "Explaining…" : result ? "Explain again" : "Explain this evidence"}
         </button>
         {busy && (
-          <span role="status" className="text-xs text-[#8a97b4]">
+          <span role="status" className="text-sm text-muted">
             Reading the evidence… this can take up to a minute.
           </span>
         )}
@@ -104,13 +104,13 @@ export default function AiInvestigator({
         <div className="mt-4 space-y-3">
           <div className="flex flex-wrap items-center gap-2">
             <Pill
-              className={result.source === "gemini" ? "border-[#8fa8ff]/50 bg-[#8fa8ff]/10 text-[#a9bbff]" : "border-[#1d2742] text-[#c3cde3]"}
+              className={result.source === "gemini" ? "chip-cyan" : ""}
               title={result.source === "gemini" ? "Wording written by an AI model from the evidence JSON" : "Wording produced by fixed rules, no AI involved"}
             >
               {result.source === "gemini" ? `AI: ${result.model ?? "Gemini"}` : "Deterministic template"}
             </Pill>
             <Pill
-              className={result.grounding.passed ? "border-[#59d98e]/40 bg-[#59d98e]/10 text-[#59d98e]" : "border-[#f2b84b]/40 bg-[#f2b84b]/10 text-[#f2b84b]"}
+              className={result.grounding.passed ? "chip-green" : "chip-amber"}
               title="Every number in the text must also appear in the measured evidence"
             >
               {result.grounding.passed ? "Grounding check: passed ✓" : "Grounding check: failed — template used"}
@@ -119,7 +119,7 @@ export default function AiInvestigator({
 
           <p
             role="note"
-            className="rounded-sm border border-[#f2b84b]/40 bg-[#f2b84b]/10 px-3 py-2 text-xs font-medium leading-relaxed text-[#f2d9a0]"
+            className="border border-l-4 border-warn bg-panel px-3 py-2 text-sm font-medium leading-relaxed text-fg"
           >
             {result.disclaimer}
           </p>
@@ -127,15 +127,15 @@ export default function AiInvestigator({
           <div className="space-y-3">
             {sections.map((s) => (
               <section key={s.key} aria-labelledby={`ai-${inv.id}-${s.key}`}>
-                <h4 id={`ai-${inv.id}-${s.key}`} className="mb-1 text-sm font-semibold text-[#e6ebf5]">
+                <h4 id={`ai-${inv.id}-${s.key}`} className="serif mb-1 text-base font-semibold text-fg">
                   {s.title}
                 </h4>
                 {s.statements.length === 0 ? (
-                  <p className="text-xs text-[#8a97b4]">Nothing to report.</p>
+                  <p className="text-sm text-muted">Nothing to report.</p>
                 ) : (
                   <ul className="space-y-1.5">
                     {s.statements.map((st, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm leading-relaxed text-[#c3cde3]">
+                      <li key={i} className="flex items-start gap-2 text-sm leading-relaxed text-fg">
                         <span className="mt-0.5">
                           <KindTag kind={st.kind} />
                         </span>
@@ -148,11 +148,11 @@ export default function AiInvestigator({
             ))}
           </div>
 
-          <div className="rounded-sm border border-[#1d2742] bg-[#0a0f1c]/60 px-3 py-2">
-            <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[#8a97b4]">Legend</p>
+          <div className="border-t border-line pt-3">
+            <h4 className="serif mb-1 text-base font-semibold text-fg">Legend</h4>
             <ul className="space-y-1">
               {KIND_ORDER.map((k) => (
-                <li key={k} className="flex items-start gap-2 text-xs text-[#8a97b4]">
+                <li key={k} className="flex items-start gap-2 text-sm text-muted">
                   <KindTag kind={k} />
                   <span>{kindDescription(k)}</span>
                 </li>

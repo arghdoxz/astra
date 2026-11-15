@@ -73,14 +73,14 @@ function EmbedBody({ inv, fallbackReason }: { inv: Investigation; fallbackReason
 
   return (
     <>
-      {inv.generated_from === "mock" && <Banner tone="danger" title="Development placeholder — not real data" />}
+      {inv.generated_from === "mock" && <Banner tone="danger" title="Development placeholder: not real data" />}
       {inv.generated_from === "demo_bundle" && (
         <Banner tone="info" title={`Precomputed snapshot of real SPHEREx data (generated ${isoDateOnly(inv.provenance?.generated_at ?? inv.created_at)})`}>
           {fallbackReason ?? ""}
         </Banner>
       )}
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="text-base font-semibold">{name}</h1>
+        <h1 className="serif text-lg font-semibold">{name}</h1>
         <a href={full} target="_blank" rel="noopener noreferrer" className="text-sm">
           Open in ASTRA ↗
         </a>
@@ -99,7 +99,7 @@ function EmbedBody({ inv, fallbackReason }: { inv: Investigation; fallbackReason
         onDiffMethodChange={setMethod}
         compact
       />
-      <p className="text-[11px] text-muted">ASTRA — independent project, not affiliated with or endorsed by NASA.</p>
+      <p className="text-xs text-muted">ASTRA is an independent project, not affiliated with or endorsed by NASA.</p>
     </>
   );
 }

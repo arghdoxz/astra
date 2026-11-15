@@ -15,12 +15,12 @@ export const SERVICES: { key: keyof CrossMatch; label: string; blurb: string }[]
 
 /** Compact match table, reused by candidate details. */
 export function MatchTable({ matches, service }: { matches: CatalogMatch[]; service: CatalogResult["service"] }) {
-  if (matches.length === 0) return <p className="text-xs text-[#8a97b4]">No associations within the match radius.</p>;
+  if (matches.length === 0) return <p className="text-sm text-muted">No associations within the match radius.</p>;
   return (
     <TableWrap>
       <table className="w-full min-w-[520px] border-collapse">
         <thead>
-          <tr className="border-b border-[#1d2742]">
+          <tr className="border-b border-line">
             <th className={thCls}>Id</th>
             <th className={thCls}>Sep (″)</th>
             <th className={thCls}>Mag</th>
@@ -34,8 +34,8 @@ export function MatchTable({ matches, service }: { matches: CatalogMatch[]; serv
         </thead>
         <tbody>
           {matches.map((m) => (
-            <tr key={`${service}-${m.id}`} className="border-b border-[#1d2742]/60 last:border-0">
-              <td className={`${tdCls} font-mono`}>{m.id}</td>
+            <tr key={`${service}-${m.id}`} className="border-b border-line last:border-0">
+              <td className={`${tdCls} mono`}>{m.id}</td>
               <td className={tdCls}>{num(m.sep_arcsec, 2)}</td>
               <td className={tdCls}>{m.mag == null ? "—" : `${num(m.mag, 2)}${m.mag_band ? ` ${m.mag_band}` : ""}`}</td>
               <td className={tdCls}>{m.pm_ra == null || m.pm_dec == null ? "—" : `${num(m.pm_ra, 0)}, ${num(m.pm_dec, 0)}`}</td>
@@ -43,7 +43,7 @@ export function MatchTable({ matches, service }: { matches: CatalogMatch[]; serv
               <td className={tdCls}>
                 {[m.otype, m.class, m.variable_flag && m.variable_flag !== "NOT_AVAILABLE" ? m.variable_flag : null].filter(Boolean).join(" · ") || "—"}
               </td>
-              <td className={tdCls}>{m.epoch_propagated ? <span className="text-[#59d98e]">✓</span> : <span className="text-[#8a97b4]">no</span>}</td>
+              <td className={tdCls}>{m.epoch_propagated ? <span className="text-good">✓</span> : <span className="text-muted">no</span>}</td>
             </tr>
           ))}
         </tbody>
@@ -105,22 +105,22 @@ export default function CrossmatchPanel({ inv }: { inv: Investigation }) {
   return (
     <Card title="Catalog cross-match" subtitle="Associations with Gaia, SIMBAD, CatWISE and SkyBoT around the target position">
       <Note>
-        An association within {usedRadius}″ is a <strong className="text-[#e6ebf5]">positional coincidence, not proof of
+        An association within {usedRadius}″ is a <strong className="text-fg">positional coincidence, not proof of
         identity</strong>. Separation is measured from the requested position{usedRadius === 30 && !result ? " (default match radius)" : ""}.
       </Note>
 
-      <div className="mt-3 space-y-4">
+      <div className="mt-3 divide-y divide-line [&>div]:py-3">
         {SERVICES.map((s) => {
           const r = cm[s.key];
           return (
             <div key={s.key}>
               <div className="mb-1 flex flex-wrap items-center gap-2">
-                <h4 className="text-sm font-semibold text-[#e6ebf5]">{s.label}</h4>
+                <h4 className="serif text-base font-semibold text-fg">{s.label}</h4>
                 <StatusChip status={r?.status ?? "unavailable"} message={r?.message} />
-                <span className="text-xs text-[#8a97b4]">{s.blurb}</span>
+                <span className="text-sm text-muted">{s.blurb}</span>
               </div>
               {r?.status !== "ok" ? (
-                <p className="text-xs text-[#f2b84b]">
+                <p className="text-sm text-warn">
                   {r?.message ? r.message : r?.status === "error" ? "The service returned an error." : "The service was unavailable, so this check is missing — not evidence of a non-match."}
                 </p>
               ) : (
@@ -134,8 +134,8 @@ export default function CrossmatchPanel({ inv }: { inv: Investigation }) {
       {gaiaLine && (
         <>
           <SectionTitle>Predicted vs observed position (nearest Gaia association)</SectionTitle>
-          <p className="text-xs leading-relaxed text-[#e6ebf5]">
-            Gaia <span className="font-mono">{gaiaLine.g.id}</span> lies {num(gaiaLine.g.sep_arcsec, 2)}″ from the requested position.{" "}
+          <p className="text-sm leading-relaxed text-fg">
+            Gaia <span className="mono">{gaiaLine.g.id}</span> lies {num(gaiaLine.g.sep_arcsec, 2)}″ from the requested position.{" "}
             {gaiaLine.g.epoch_propagated ? "Its position was propagated to the SPHEREx epoch. " : "Its position was not propagated to the SPHEREx epoch. "}
             Predicted {gaiaLine.fromTrack ? "position at the mean SPHEREx epoch" : "(requested) position"}:{" "}
             <span className="tabular-nums">{formatRA(gaiaLine.pred.ra)} {formatDec(gaiaLine.pred.dec)}</span>; Gaia:{" "}
@@ -157,16 +157,16 @@ export default function CrossmatchPanel({ inv }: { inv: Investigation }) {
           value={radius}
           onChange={(e) => setRadius(Number(e.target.value))}
           aria-label="Match radius in arcseconds"
-          className="min-w-[10rem] flex-1 accent-[#74c7da]"
+          className="min-w-[10rem] flex-1"
           disabled={!live}
         />
-        <span className="w-12 text-right text-xs tabular-nums text-[#e6ebf5]">{radius}″</span>
+        <span className="w-12 text-right text-sm tabular-nums text-fg">{radius}″</span>
         <button type="button" className={btnPrimary} onClick={requery} disabled={!live || busy}>
           {busy ? "Querying…" : "Re-query"}
         </button>
       </div>
       {!live && (
-        <p className="mt-1 text-xs text-[#8a97b4]">
+        <p className="mt-1 text-sm text-muted">
           Re-querying needs the live service. This is a precomputed snapshot, so the radius control is disabled.
         </p>
       )}

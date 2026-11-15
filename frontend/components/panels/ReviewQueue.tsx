@@ -73,13 +73,13 @@ export default function ReviewQueue() {
     };
   }, []);
 
-  if (items === null) return <p role="status" className="text-xs text-[#8a97b4]">Loading the review queue…</p>;
+  if (items === null) return <p role="status" className="text-sm text-muted">Loading the review queue…</p>;
 
   if (error) {
     return (
       <div className="space-y-2">
         <ErrorNote>The review queue could not be loaded: {error}</ErrorNote>
-        <p className="text-xs text-[#8a97b4]">
+        <p className="text-sm text-muted">
           The queue lives on the ASTRA service. If it is starting up or offline, try again in a minute.
         </p>
         <button type="button" className={btn} onClick={() => void load()}>
@@ -103,39 +103,39 @@ export default function ReviewQueue() {
       {items.map((it) => {
         const t: Record<string, number> = it.tally ?? {};
         return (
-          <li key={it.candidate_id} className="overflow-hidden rounded-sm border border-[#1d2742] bg-[#111830]">
+          <li key={it.candidate_id} className="overflow-hidden border border-line bg-panel hover:border-fg">
             <Link
               href={link(it)}
-              className="flex h-full flex-col focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#74c7da]"
+              className="flex h-full flex-col focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-pencil"
             >
-              <div className="flex aspect-[2/1] w-full items-center justify-center bg-[#0a0f1c]">
+              <div className="flex aspect-[2/1] w-full items-center justify-center bg-panel2">
                 {it.thumbnail_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={thumb(it.thumbnail_url)}
                     alt={`Cutout for ${it.name ?? it.candidate_id}`}
                     loading="lazy"
-                    className="h-full w-full object-contain"
+                    className="negative h-full w-full object-contain"
                     style={{ imageRendering: "pixelated" }}
                   />
                 ) : (
-                  <span className="text-xs text-[#8a97b4]">no thumbnail</span>
+                  <span className="text-sm text-muted">no thumbnail</span>
                 )}
               </div>
               <div className="flex flex-1 flex-col gap-1.5 p-3">
-                <p className="text-sm font-medium text-[#e6ebf5]">
-                  {it.name || "Unnamed position"} <span className="font-mono text-xs text-[#8a97b4]">{it.candidate_id.split(":").pop()}</span>
+                <p className="text-sm font-medium text-fg">
+                  {it.name || "Unnamed position"} <span className="mono text-sm text-muted">{it.candidate_id.split(":").pop()}</span>
                 </p>
-                <p className="text-xs text-[#8a97b4]">
+                <p className="text-sm text-muted">
                   {KIND[it.kind] ?? it.kind} · <span className="tabular-nums">{formatRA(it.ra)} {formatDec(it.dec)}</span>
                 </p>
                 <div className="flex flex-wrap items-center gap-1.5">
                   <ConfidenceBadge confidence={it.confidence} />
                   <ClassificationBadge classification={it.classification} label={LABEL[it.classification] ?? it.classification} />
                 </div>
-                <p className="mt-auto pt-1 text-xs text-[#8a97b4]">
-                  Verdicts: real <b className="text-[#59d98e]">{t.real ?? 0}</b> · artifact <b className="text-[#f58a8a]">{t.artifact ?? 0}</b> · known{" "}
-                  <b className="text-[#74c7da]">{t.known ?? 0}</b> · unsure <b className="text-[#c3cde3]">{t.unsure ?? 0}</b>
+                <p className="mt-auto pt-1 text-sm text-muted">
+                  Verdicts: real <b className="text-good">{t.real ?? 0}</b> · artifact <b className="text-bad">{t.artifact ?? 0}</b> · known{" "}
+                  <b className="text-accent">{t.known ?? 0}</b> · unsure <b className="text-fg">{t.unsure ?? 0}</b>
                 </p>
               </div>
             </Link>

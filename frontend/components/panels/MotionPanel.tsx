@@ -157,31 +157,31 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
           role="img"
           aria-label="Measured positions and predicted track as arcsecond offsets from the first predicted point; east is left, north is up"
         >
-          <rect x={M.l} y={M.t} width={geom.pw} height={geom.ph} fill="#0a0f1c" stroke="#1d2742" />
+          <rect x={M.l} y={M.t} width={geom.pw} height={geom.ph} fill="#f1f2f0" stroke="#b3b9b6" />
           {geom.xt.map((v) => (
             <g key={`x${v}`}>
-              <line x1={sx(v)} x2={sx(v)} y1={M.t} y2={M.t + geom.ph} stroke="#1d2742" strokeWidth={0.7} />
-              <text x={sx(v)} y={M.t + geom.ph + 13} textAnchor="middle" fontSize={9.5} fill="#8a97b4">
+              <line x1={sx(v)} x2={sx(v)} y1={M.t} y2={M.t + geom.ph} stroke="#ccd1ce" strokeWidth={0.7} />
+              <text x={sx(v)} y={M.t + geom.ph + 13} textAnchor="middle" fontSize={11.5} fill="#4f565b">
                 {tickLabel(v)}
               </text>
             </g>
           ))}
           {geom.yt.map((v) => (
             <g key={`y${v}`}>
-              <line x1={M.l} x2={M.l + geom.pw} y1={sy(v)} y2={sy(v)} stroke="#1d2742" strokeWidth={0.7} />
-              <text x={M.l - 5} y={sy(v) + 3} textAnchor="end" fontSize={9.5} fill="#8a97b4">
+              <line x1={M.l} x2={M.l + geom.pw} y1={sy(v)} y2={sy(v)} stroke="#ccd1ce" strokeWidth={0.7} />
+              <text x={M.l - 5} y={sy(v) + 3} textAnchor="end" fontSize={11.5} fill="#4f565b">
                 {tickLabel(v)}
               </text>
             </g>
           ))}
-          <text x={M.l + geom.pw / 2} y={H - 6} textAnchor="middle" fontSize={10.5} fill="#8a97b4">
+          <text x={M.l + geom.pw / 2} y={H - 6} textAnchor="middle" fontSize={12.5} fill="#4f565b">
             ← East · ΔRA·cosδ (arcsec)
           </text>
           <text
             transform={`translate(11 ${M.t + geom.ph / 2}) rotate(-90)`}
             textAnchor="middle"
-            fontSize={10.5}
-            fill="#8a97b4"
+            fontSize={12.5}
+            fill="#4f565b"
           >
             ΔDec (arcsec) · North ↑
           </text>
@@ -194,16 +194,16 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
               <polyline
                 points={geom.trk.map((p) => `${sx(p.off[0])},${sy(p.off[1])}`).join(" ")}
                 fill="none"
-                stroke="#74c7da"
+                stroke="#1f3f8a"
                 strokeWidth={1.4}
                 strokeDasharray="5 3"
               />
             )}
             {geom.trk.map((p, i) => (
-              <circle key={`t${i}`} cx={sx(p.off[0])} cy={sy(p.off[1])} r={2} fill="#74c7da" opacity={0.8} />
+              <circle key={`t${i}`} cx={sx(p.off[0])} cy={sy(p.off[1])} r={2} fill="#1f3f8a" opacity={0.8} />
             ))}
             {/* origin */}
-            <g stroke="#e6ebf5" strokeWidth={1}>
+            <g stroke="#121416" strokeWidth={1}>
               <line x1={sx(0) - 5} x2={sx(0) + 5} y1={sy(0)} y2={sy(0)} />
               <line x1={sx(0)} x2={sx(0)} y1={sy(0) - 5} y2={sy(0) + 5} />
             </g>
@@ -218,8 +218,8 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
                 <g key={`m${i}`}>
                   {e.pred && (
                     <>
-                      <line x1={sx(e.pred[0])} y1={sy(e.pred[1])} x2={cx} y2={cy} stroke="#f2b84b" strokeWidth={1.2} />
-                      <circle cx={sx(e.pred[0])} cy={sy(e.pred[1])} r={2.5} fill="none" stroke="#74c7da" strokeWidth={1.2} />
+                      <line x1={sx(e.pred[0])} y1={sy(e.pred[1])} x2={cx} y2={cy} stroke="#8a5a06" strokeWidth={1.2} />
+                      <circle cx={sx(e.pred[0])} cy={sy(e.pred[1])} r={2.5} fill="none" stroke="#1f3f8a" strokeWidth={1.2} />
                     </>
                   )}
                   <circle
@@ -232,8 +232,8 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
                     strokeWidth={1.4}
                     strokeDasharray={hollow ? "3 2" : undefined}
                   />
-                  <circle cx={cx} cy={cy} r={2.6} fill={hollow ? "#0a0f1c" : color} stroke={color} strokeWidth={1.4} />
-                  <text x={cx + r + 3} y={cy - 3} fontSize={9.5} fill={color}>
+                  <circle cx={cx} cy={cy} r={2.6} fill={hollow ? "#f1f2f0" : color} stroke={color} strokeWidth={1.4} />
+                  <text x={cx + r + 3} y={cy - 3} fontSize={11.5} fill={color}>
                     {i + 1}
                   </text>
                 </g>
@@ -243,30 +243,30 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
         </svg>
       </div>
 
-      <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#8a97b4]">
+      <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
         <li className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="inline-block w-5 border-t-2 border-dashed border-[#74c7da]" />
+          <span aria-hidden className="inline-block w-5 border-t-2 border-dashed border-accent" />
           predicted track
         </li>
         <li className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full border-2 border-[#74c7da]" />
+          <span aria-hidden className="inline-block h-2.5 w-2.5 border-2 border-accent" />
           predicted at epoch
         </li>
         <li className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-[#e6ebf5]/40 ring-1 ring-[#e6ebf5]" />
+          <span aria-hidden className="inline-block h-2.5 w-2.5 border border-fg bg-panel2" />
           measured ±1σ (numbered by epoch)
         </li>
         <li className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full border border-dashed border-[#e6ebf5]" />
+          <span aria-hidden className="inline-block h-2.5 w-2.5 border border-dashed border-fg" />
           hollow: crowded or saturated
         </li>
         <li className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="inline-block w-5 border-t-2 border-[#f2b84b]" />
+          <span aria-hidden className="inline-block w-5 border-t-2 border-warn" />
           residual (observed − predicted)
         </li>
       </ul>
       {predictedMotion && (
-        <p className="mt-2 text-xs text-[#8a97b4]">
+        <p className="mt-2 text-sm text-muted">
           The predicted track covers {num(predictedMotion.arcsec, 2)}″ over {num(predictedMotion.years, 2)} yr
           {predictedMotion.arcsec < 6.15 ? " — less than one SPHEREx pixel (6.15″), so motion is only visible from the centroid fit, not by blinking alone" : ""}.
           Systematic registration uncertainty is about 0.1–0.3″.
@@ -275,12 +275,12 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
 
       <SectionTitle hint="Residuals are observed − predicted, in arcsec (RA component multiplied by cosδ).">Epochs</SectionTitle>
       {measured.length === 0 ? (
-        <p className="text-xs text-[#8a97b4]">No measured epochs.</p>
+        <p className="text-sm text-muted">No measured epochs.</p>
       ) : (
         <TableWrap>
           <table className="w-full min-w-[480px] border-collapse">
             <thead>
-              <tr className="border-b border-[#1d2742]">
+              <tr className="border-b border-line">
                 <th className={thCls}>#</th>
                 <th className={thCls}>Date</th>
                 <th className={thCls}>Visit</th>
@@ -293,11 +293,11 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
             </thead>
             <tbody>
               {measured.map((m, i) => (
-                <tr key={i} className="border-b border-[#1d2742]/60 last:border-0">
+                <tr key={i} className="border-b border-line last:border-0">
                   <td className={tdCls}>{i + 1}</td>
                   <td className={tdCls}>{mjdToDate(m.mjd)}</td>
                   <td className={tdCls}>
-                    <span aria-hidden className="mr-1 inline-block h-2 w-2 rounded-full" style={{ background: visitColor(visitIndex(m.visit_id)) }} />
+                    <span aria-hidden className="mr-1 inline-block h-2.5 w-2.5" style={{ background: visitColor(visitIndex(m.visit_id)) }} />
                     {m.visit_id}
                     {m.detector === "all" ? "" : ` · D${m.detector}`}
                   </td>
@@ -306,9 +306,9 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
                   <td className={tdCls}>{num(m.err_arcsec, 2)}</td>
                   <td className={tdCls}>{num(m.snr, 1)}</td>
                   <td className={tdCls}>
-                    {m.saturated && <span className="mr-1 text-[#f2b84b]">saturated</span>}
-                    {m.crowded && <span className="mr-1 text-[#f2b84b]">crowded</span>}
-                    {!m.saturated && !m.crowded && <span className="text-[#59d98e]">used</span>}
+                    {m.saturated && <span className="mr-1 text-warn">saturated</span>}
+                    {m.crowded && <span className="mr-1 text-warn">crowded</span>}
+                    {!m.saturated && !m.crowded && <span className="text-good">used</span>}
                   </td>
                 </tr>
               ))}
@@ -321,7 +321,7 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
         Proper motion: fit vs catalog
       </SectionTitle>
       {!fit ? (
-        <p className="text-xs text-[#8a97b4]">
+        <p className="text-sm text-muted">
           {usable.length < 2
             ? `No proper-motion fit: it needs at least two usable epochs and only ${usable.length} ${usable.length === 1 ? "is" : "are"} available (others are saturated, crowded or missing).`
             : "No proper-motion fit was produced for this target."}
@@ -332,7 +332,7 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
         <TableWrap>
           <table className="w-full min-w-[420px] border-collapse">
             <thead>
-              <tr className="border-b border-[#1d2742]">
+              <tr className="border-b border-line">
                 <th className={thCls}>Source</th>
                 <th className={thCls}>µα* (mas/yr)</th>
                 <th className={thCls}>µδ (mas/yr)</th>
@@ -345,7 +345,7 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
             </thead>
             <tbody>
               {fit && (
-                <tr className="border-b border-[#1d2742]/60">
+                <tr className="border-b border-line">
                   <td className={tdCls}>SPHEREx fit ({fit.n_points} pts)</td>
                   <td className={tdCls}>
                     {num(fit.pm_ra, 1)} ± {num(fit.pm_ra_err, 1)}
@@ -379,16 +379,16 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
         </TableWrap>
       )}
       {fit && astro.consistency_sigma != null && (
-        <p className="mt-2 text-xs text-[#8a97b4]">
+        <p className="mt-2 text-sm text-muted">
           Difference from the catalog proper motion:{" "}
-          <strong className={astro.consistency_sigma < 3 ? "text-[#59d98e]" : "text-[#f2b84b]"}>
+          <strong className={astro.consistency_sigma < 3 ? "text-good" : "text-warn"}>
             {num(astro.consistency_sigma, 1)}σ
           </strong>{" "}
           — {astro.consistency_sigma < 3 ? "consistent with the catalog (threshold 3σ)." : "larger than the 3σ consistency threshold; check crowding, registration and saturation before reading anything into it."}
         </p>
       )}
       {fit && fit.baseline_yr < 1 && (
-        <p className="mt-1 text-xs text-[#8a97b4]">
+        <p className="mt-1 text-sm text-muted">
           The baseline is under one year, so parallax and proper motion cannot be separated and parallax is not fitted.
         </p>
       )}
@@ -397,13 +397,13 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
         Registration check
       </SectionTitle>
       {reg ? (
-        <p className="text-xs text-[#e6ebf5]">
+        <p className="text-sm text-fg">
           {reg.n_stars} reference stars ({reg.reference === "gaia_dr3" ? "Gaia DR3" : reg.reference}): median offset{" "}
           <span className="tabular-nums">{num(reg.median_offset_arcsec, 2)}″</span>, rms{" "}
           <span className="tabular-nums">{num(reg.rms_arcsec, 2)}″</span>.
         </p>
       ) : (
-        <p className="text-xs text-[#8a97b4]">Not available: too few unsaturated Gaia stars in the field.</p>
+        <p className="text-sm text-muted">Not available: too few unsaturated Gaia stars in the field.</p>
       )}
     </Card>
   );

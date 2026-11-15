@@ -83,7 +83,7 @@ export default function PhotometryTable({ inv }: { inv: Investigation }) {
       subtitle={`${rows.length} measurement${rows.length === 1 ? "" : "s"}; saturated values are lower limits (≥)`}
       right={
         <>
-          <label className="flex items-center gap-1 text-xs text-[#8a97b4]">
+          <label className="flex items-center gap-1 text-sm text-muted">
             Detector
             <select className={`${inputCls} w-auto`} value={det} onChange={(e) => { setDet(e.target.value); setLimit(100); }} aria-label="Filter by detector">
               <option value="all">All</option>
@@ -113,7 +113,7 @@ export default function PhotometryTable({ inv }: { inv: Investigation }) {
           <TableWrap>
             <table className="w-full min-w-[720px] border-collapse">
               <thead>
-                <tr className="border-b border-[#1d2742]">
+                <tr className="border-b border-line">
                   {COLS.map((c) => (
                     <th
                       key={c.key}
@@ -124,10 +124,10 @@ export default function PhotometryTable({ inv }: { inv: Investigation }) {
                       <button
                         type="button"
                         onClick={() => onSort(c.key)}
-                        className="inline-flex items-center gap-1 uppercase tracking-wide hover:text-[#74c7da] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]"
+                        className="inline-flex items-center gap-1 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-pencil"
                       >
                         {c.label}
-                        <span aria-hidden className="text-[9px]">
+                        <span aria-hidden className="text-xs">
                           {sort.key === c.key ? (sort.dir === 1 ? "▲" : "▼") : "↕"}
                         </span>
                       </button>
@@ -137,7 +137,7 @@ export default function PhotometryTable({ inv }: { inv: Investigation }) {
               </thead>
               <tbody>
                 {rows.slice(0, limit).map((p) => (
-                  <tr key={`${p.obs_id}-${p.detector}-${p.wavelength_um}`} className={`border-b border-[#1d2742]/60 last:border-0 ${p.outlier ? "bg-[#f26b6b]/5" : ""}`}>
+                  <tr key={`${p.obs_id}-${p.detector}-${p.wavelength_um}`} className={`border-b border-line last:border-0`}>
                     <td className={tdCls}>{mjdToDate(p.mjd)}</td>
                     <td className={tdCls}>{p.detector}</td>
                     <td className={tdCls}>{num(p.wavelength_um, 3)}</td>
@@ -146,12 +146,12 @@ export default function PhotometryTable({ inv }: { inv: Investigation }) {
                     </td>
                     <td className={tdCls}>{num(p.snr, 1)}</td>
                     <td className={tdCls}>{p.saturated ? (p.ab_mag === null ? "—" : `≤ ${num(p.ab_mag, 2)}`) : num(p.ab_mag, 2)}</td>
-                    <td className={tdCls}>{p.saturated ? <span className="text-[#f2b84b]">yes</span> : "no"}</td>
+                    <td className={tdCls}>{p.saturated ? <span className="text-warn">yes</span> : "no"}</td>
                     <td className={tdCls}>{(p.flagged_frac * 100).toFixed(0)}%</td>
-                    <td className={`${tdCls} ${p.contamination_bits.length ? "text-[#f2b84b]" : "text-[#8a97b4]"}`}>
+                    <td className={`${tdCls} ${p.contamination_bits.length ? "text-warn" : "text-muted"}`}>
                       {p.contamination_bits.length ? p.contamination_bits.join(", ") : "none"}
                     </td>
-                    <td className={tdCls}>{p.outlier ? <span className="text-[#f26b6b]">× yes</span> : "no"}</td>
+                    <td className={tdCls}>{p.outlier ? <span className="text-bad">× yes</span> : "no"}</td>
                   </tr>
                 ))}
               </tbody>

@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 
 export default function ReviewPage() {
   return (
-    <main className="page space-y-8 py-8">
-      <header className="max-w-3xl space-y-2">
-        <h1 className="text-2xl font-semibold">Review</h1>
-        <p className="text-[#c5cde0]">
+    <main className="page space-y-10 py-8">
+      <header className="max-w-3xl space-y-3">
+        <h1 className="serif text-3xl font-semibold">Review</h1>
+        <p className="max-w-[62ch] text-fg">
           ASTRA scores evidence, but people decide. Open an item, look at the images, measurements and catalogue matches, and record whether you think it is real, an artifact, already known, or unsure. Your
           verdicts are tallied next to the automatic classification; they never change it.
         </p>
