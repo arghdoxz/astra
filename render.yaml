@@ -1,0 +1,37 @@
+# Render Blueprint: New > Blueprint > select this repo.
+services:
+  - type: web
+    name: astra-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    # Free tier (512 MB) may OOM during reprojection; Starter is the safe choice.
+    plan: starter
+    autoDeploy: true
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false            # set in the Render dashboard; never commit
+      - key: GEMINI_MODEL
+        value: gemini-flash-latest
+      - key: GEMINI_FALLBACK_MODEL
+        value: gemini-2.5-flash
+      - key: SPHEREX_COLLECTIONS
+        value: spherex_dr1,spherex_qr3
+      - key: MAX_EXPOSURES
+        value: "160"
+      - key: CUTOUT_CONCURRENCY
+        value: "6"
+      - key: CUTOUT_MODE
+        value: stream
+      - key: ALLOWED_ORIGINS
+        # Replace with the Vercel production URL (comma-separated, no trailing slash).
+        # *.vercel.app previews are already allowed by ALLOWED_ORIGIN_REGEX in the app.
+        value: http://localhost:3000,https://YOUR-APP.vercel.app
+    # Optional (paid plans): persist cache + SQLite across deploys. The image sets
+    # CACHE_DIR=/app/cache and DB_PATH=/app/data/astra.sqlite3. Mount one disk at /app/data
+    # and add env CACHE_DIR=/app/data/cache to keep both.
+    # disk:
+    #   name: astra-data
+    #   mountPath: /app/data
+    #   sizeGB: 5
