@@ -194,13 +194,13 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
               <polyline
                 points={geom.trk.map((p) => `${sx(p.off[0])},${sy(p.off[1])}`).join(" ")}
                 fill="none"
-                stroke="#5ad1e6"
+                stroke="#74c7da"
                 strokeWidth={1.4}
                 strokeDasharray="5 3"
               />
             )}
             {geom.trk.map((p, i) => (
-              <circle key={`t${i}`} cx={sx(p.off[0])} cy={sy(p.off[1])} r={2} fill="#5ad1e6" opacity={0.8} />
+              <circle key={`t${i}`} cx={sx(p.off[0])} cy={sy(p.off[1])} r={2} fill="#74c7da" opacity={0.8} />
             ))}
             {/* origin */}
             <g stroke="#e6ebf5" strokeWidth={1}>
@@ -219,7 +219,7 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
                   {e.pred && (
                     <>
                       <line x1={sx(e.pred[0])} y1={sy(e.pred[1])} x2={cx} y2={cy} stroke="#f2b84b" strokeWidth={1.2} />
-                      <circle cx={sx(e.pred[0])} cy={sy(e.pred[1])} r={2.5} fill="none" stroke="#5ad1e6" strokeWidth={1.2} />
+                      <circle cx={sx(e.pred[0])} cy={sy(e.pred[1])} r={2.5} fill="none" stroke="#74c7da" strokeWidth={1.2} />
                     </>
                   )}
                   <circle
@@ -245,11 +245,11 @@ export default function MotionPanel({ inv }: { inv: Investigation }) {
 
       <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#8a97b4]">
         <li className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="inline-block w-5 border-t-2 border-dashed border-[#5ad1e6]" />
+          <span aria-hidden className="inline-block w-5 border-t-2 border-dashed border-[#74c7da]" />
           predicted track
         </li>
         <li className="inline-flex items-center gap-1.5">
-          <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full border-2 border-[#5ad1e6]" />
+          <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full border-2 border-[#74c7da]" />
           predicted at epoch
         </li>
         <li className="inline-flex items-center gap-1.5">

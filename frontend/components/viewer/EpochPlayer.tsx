@@ -482,14 +482,14 @@ export default function EpochPlayer({
     // predicted track
     if (overlays.track && inv.track.length) {
       const pts = [...inv.track].sort((a, b) => a.mjd - b.mjd);
-      ctx.strokeStyle = "rgba(90,209,230,0.85)";
+      ctx.strokeStyle = "rgba(116, 199, 218,0.85)";
       ctx.lineWidth = 1.5;
       ctx.setLineDash([5, 4]);
       ctx.beginPath();
       pts.forEach((p, i) => (i === 0 ? ctx.moveTo(gx(p.x), gy(p.y)) : ctx.lineTo(gx(p.x), gy(p.y))));
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = "rgba(90,209,230,0.9)";
+      ctx.fillStyle = "rgba(116, 199, 218,0.9)";
       for (const p of pts) {
         ctx.beginPath();
         ctx.arc(gx(p.x), gy(p.y), 2.5, 0, Math.PI * 2);
@@ -498,12 +498,12 @@ export default function EpochPlayer({
       if (curMjd !== undefined) {
         let best = pts[0];
         for (const p of pts) if (Math.abs(p.mjd - curMjd) < Math.abs(best.mjd - curMjd)) best = p;
-        ctx.strokeStyle = "#5ad1e6";
+        ctx.strokeStyle = "#74c7da";
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(gx(best.x), gy(best.y), 9, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.fillStyle = "#5ad1e6";
+        ctx.fillStyle = "#74c7da";
         ctx.font = `11px ${mono}`;
         ctx.textAlign = "left";
         ctx.fillText(`predicted ${mjdToISODate(best.mjd)}`, gx(best.x) + 13, gy(best.y) - 11);
@@ -515,7 +515,7 @@ export default function EpochPlayer({
       for (const m of inv.astrometry.measured) {
         const p = skyToGrid(grid, m.ra, m.dec);
         const here = item?.visitId && m.visit_id === item.visitId;
-        ctx.strokeStyle = here ? "#e05ad1" : "rgba(224,90,209,0.55)";
+        ctx.strokeStyle = here ? "#c58ab8" : "rgba(224,90,209,0.55)";
         ctx.lineWidth = here ? 2.5 : 1.3;
         const s = here ? 7 : 5;
         const x = gx(p.x);

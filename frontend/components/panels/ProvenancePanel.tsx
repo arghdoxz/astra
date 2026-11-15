@@ -84,8 +84,8 @@ export default function ProvenancePanel({ inv }: { inv: Investigation }) {
       )}
 
       <SectionTitle>Exposures used</SectionTitle>
-      <details className="rounded-md border border-[#1d2742] bg-[#0a0f1c]/60 px-3 py-2">
-        <summary className="cursor-pointer text-xs font-medium text-[#5ad1e6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ad1e6]">
+      <details className="rounded-sm border border-[#1d2742] bg-[#0a0f1c]/60 px-3 py-2">
+        <summary className="cursor-pointer text-xs font-medium text-[#74c7da] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]">
           Show {inv.exposures.length} exposure{inv.exposures.length === 1 ? "" : "s"}
         </summary>
         <div className="mt-2 max-h-72 overflow-y-auto">

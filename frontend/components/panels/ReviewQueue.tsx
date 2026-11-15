@@ -103,10 +103,10 @@ export default function ReviewQueue() {
       {items.map((it) => {
         const t: Record<string, number> = it.tally ?? {};
         return (
-          <li key={it.candidate_id} className="overflow-hidden rounded-lg border border-[#1d2742] bg-[#111830]">
+          <li key={it.candidate_id} className="overflow-hidden rounded-sm border border-[#1d2742] bg-[#111830]">
             <Link
               href={link(it)}
-              className="flex h-full flex-col focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#5ad1e6]"
+              className="flex h-full flex-col focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#74c7da]"
             >
               <div className="flex aspect-[2/1] w-full items-center justify-center bg-[#0a0f1c]">
                 {it.thumbnail_url ? (
@@ -135,7 +135,7 @@ export default function ReviewQueue() {
                 </div>
                 <p className="mt-auto pt-1 text-xs text-[#8a97b4]">
                   Verdicts: real <b className="text-[#59d98e]">{t.real ?? 0}</b> · artifact <b className="text-[#f58a8a]">{t.artifact ?? 0}</b> · known{" "}
-                  <b className="text-[#5ad1e6]">{t.known ?? 0}</b> · unsure <b className="text-[#c3cde3]">{t.unsure ?? 0}</b>
+                  <b className="text-[#74c7da]">{t.known ?? 0}</b> · unsure <b className="text-[#c3cde3]">{t.unsure ?? 0}</b>
                 </p>
               </div>
             </Link>

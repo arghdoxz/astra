@@ -29,9 +29,9 @@ const SURVEYS: { id: string; url: string; label: string }[] = [
 const surveyUrl = (id: string) => SURVEYS.find((s) => s.id === id)?.url ?? id;
 
 const LAYERS = [
-  { key: "fov", label: "SPHEREx field", swatch: "#5ad1e6", dashed: true },
+  { key: "fov", label: "SPHEREx field", swatch: "#74c7da", dashed: true },
   { key: "track", label: "Predicted track", swatch: "#e6ebf5", dashed: true },
-  { key: "gaia", label: "Gaia matches", swatch: "#5ad1e6", dashed: false },
+  { key: "gaia", label: "Gaia matches", swatch: "#74c7da", dashed: false },
   { key: "simbad", label: "SIMBAD matches", swatch: "#f2b84b", dashed: false },
   { key: "cands", label: "Field candidates", swatch: "#e05bd1", dashed: false },
 ] as const;
@@ -200,7 +200,7 @@ export default function SkyContext({
           gridPixToSky(g, g.width - 0.5, g.height - 0.5),
           gridPixToSky(g, -0.5, g.height - 0.5),
         ];
-        const ov = A.graphicOverlay({ name: "SPHEREx field", color: "#5ad1e6", lineWidth: 1.5, lineDash: [6, 4] });
+        const ov = A.graphicOverlay({ name: "SPHEREx field", color: "#74c7da", lineWidth: 1.5, lineDash: [6, 4] });
         aladin.addOverlay(ov);
         ov.add(A.polygon(corners));
       }
@@ -231,7 +231,7 @@ export default function SkyContext({
           }),
         );
       };
-      addMatches("gaia", "Gaia DR3", inv.crossmatch?.gaia?.matches ?? [], "circle", "#5ad1e6", 12);
+      addMatches("gaia", "Gaia DR3", inv.crossmatch?.gaia?.matches ?? [], "circle", "#74c7da", 12);
       addMatches("simbad", "SIMBAD", inv.crossmatch?.simbad?.matches ?? [], "square", "#f2b84b", 16);
 
       if (layers.cands && (inv.candidates ?? []).length > 0) {
@@ -265,7 +265,7 @@ export default function SkyContext({
           <select
             value={survey}
             onChange={(e) => setSurvey(e.target.value)}
-            className="rounded-md border border-[#1d2742] bg-[#0a0f1c] px-2 py-1 text-xs text-[#e6ebf5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ad1e6]"
+            className="rounded-sm border border-[#1d2742] bg-[#0a0f1c] px-2 py-1 text-xs text-[#e6ebf5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]"
             aria-label="Background survey"
           >
             {SURVEYS.map((s) => (
@@ -288,7 +288,7 @@ export default function SkyContext({
               href={webUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-[#5ad1e6] underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ad1e6]"
+              className="font-medium text-[#74c7da] underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]"
             >
               Open this position in Aladin Lite on the web ↗
             </a>
@@ -298,7 +298,7 @@ export default function SkyContext({
         <div className="relative">
           <div
             ref={hostRef}
-            className="h-[320px] w-full overflow-hidden rounded-md border border-[#1d2742] bg-[#0a0f1c] sm:h-[420px]"
+            className="h-[320px] w-full overflow-hidden rounded-sm border border-[#1d2742] bg-[#0a0f1c] sm:h-[420px]"
             role="region"
             aria-label="Sky map around the target"
           />

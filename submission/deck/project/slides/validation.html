@@ -1,0 +1,26 @@
+<section id="validation" class="alt" data-transition="fade">
+<div class="head">
+<p class="eyebrow">VALIDATION · FIVE KNOWN TARGETS</p>
+<h2>We tested ASTRA where we know the answer</h2>
+</div>
+<table style="width:1664px; margin-top:56px; border-collapse:collapse; font-size:28px; color:var(--body)">
+<thead>
+<tr style="text-align:left; font-family:'IBM Plex Mono','Courier New',monospace; font-size:22px; color:var(--muted)">
+<th style="padding:14px 20px; border-bottom:2px solid var(--line)">TARGET</th>
+<th style="padding:14px 20px; border-bottom:2px solid var(--line)">WHAT IT IS</th>
+<th style="padding:14px 20px; border-bottom:2px solid var(--line)">ASTRA RESULT</th>
+<th style="padding:14px 20px; border-bottom:2px solid var(--line)">CONFIDENCE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="in" style="--i:0"><td style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--text); font-weight:600">Eps Indi B</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Nearby brown dwarf pair</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Motion measured, 0.59σ from catalogue</td><td class="mono" style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--sodium)">MODERATE</td></tr>
+<tr class="in" style="--i:1"><td style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--text); font-weight:600">WISE 0855</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Coldest known brown dwarf</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Motion not measured: blended with a Gaia star</td><td class="mono" style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--sodium)">LOW</td></tr>
+<tr class="in" style="--i:2"><td style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--text); font-weight:600">Barnard’s Star</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Fastest-moving star</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Saturated; motion not measured</td><td class="mono" style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--sodium)">LOW</td></tr>
+<tr class="in" style="--i:3"><td style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--text); font-weight:600">RW Aur</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Young variable star</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Known variable, matched in SIMBAD</td><td class="mono" style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--sodium)">LOW</td></tr>
+<tr class="in" style="--i:4"><td style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--text); font-weight:600">R Dra</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Mira variable</td><td style="padding:18px 20px; border-bottom:2px solid var(--line)">Saturated; not enough clean data</td><td class="mono" style="padding:18px 20px; border-bottom:2px solid var(--line); color:var(--sodium)">INSUFFICIENT</td></tr>
+</tbody>
+</table>
+<p class="small" style="margin-top:32px">Four of five targets end in “low” or “insufficient”. That’s the honest answer for saturated, blended or few-visit data, and ASTRA says so instead of guessing.</p>
+<div class="footer"><span>ASTRA · Space Apps 2026</span><span>06</span></div>
+<aside>We ran ASTRA on the five targets from the challenge brief, where the right answer is already known. Only Eps Indi B gave a clean motion measurement. The others failed for real physical reasons: Barnard’s Star and R Dra are too bright for SPHEREx and saturate, and WISE 0855 sits next to a brighter star. A tool that reported strong detections here would be wrong; ASTRA reports why it can’t tell.</aside>
+</section>

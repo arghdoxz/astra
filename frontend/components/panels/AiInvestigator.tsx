@@ -119,7 +119,7 @@ export default function AiInvestigator({
 
           <p
             role="note"
-            className="rounded-md border border-[#f2b84b]/40 bg-[#f2b84b]/10 px-3 py-2 text-xs font-medium leading-relaxed text-[#f2d9a0]"
+            className="rounded-sm border border-[#f2b84b]/40 bg-[#f2b84b]/10 px-3 py-2 text-xs font-medium leading-relaxed text-[#f2d9a0]"
           >
             {result.disclaimer}
           </p>
@@ -148,7 +148,7 @@ export default function AiInvestigator({
             ))}
           </div>
 
-          <div className="rounded-md border border-[#1d2742] bg-[#0a0f1c]/60 px-3 py-2">
+          <div className="rounded-sm border border-[#1d2742] bg-[#0a0f1c]/60 px-3 py-2">
             <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[#8a97b4]">Legend</p>
             <ul className="space-y-1">
               {KIND_ORDER.map((k) => (

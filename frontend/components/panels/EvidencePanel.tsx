@@ -26,7 +26,7 @@ function ItemRow({ item }: { item: EvidenceItem }) {
   return (
     <li className="border-b border-[#1d2742]/70 last:border-0">
       <details className="group">
-        <summary className="flex cursor-pointer list-none items-start gap-2 py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ad1e6] [&::-webkit-details-marker]:hidden">
+        <summary className="flex cursor-pointer list-none items-start gap-2 py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da] [&::-webkit-details-marker]:hidden">
           <span
             className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-xs font-bold ${m.cls} ${m.text}`}
           >
@@ -40,16 +40,16 @@ function ItemRow({ item }: { item: EvidenceItem }) {
             </span>
             <span className="mt-0.5 flex flex-wrap items-center justify-between gap-x-3 text-xs text-[#8a97b4]">
               <span>{item.threshold ? `Threshold: ${item.threshold}` : "No threshold"}</span>
-              <span className="text-[#5ad1e6] group-open:hidden">Why? ▸</span>
-              <span className="hidden text-[#5ad1e6] group-open:inline">Hide ▾</span>
+              <span className="text-[#74c7da] group-open:hidden">Why? ▸</span>
+              <span className="hidden text-[#74c7da] group-open:inline">Hide ▾</span>
             </span>
           </span>
         </summary>
-        <div className="mb-2 ml-7 space-y-1.5 rounded-md bg-[#0a0f1c]/70 px-3 py-2 text-xs leading-relaxed text-[#c3cde3]">
+        <div className="mb-2 ml-7 space-y-1.5 rounded-sm bg-[#0a0f1c]/70 px-3 py-2 text-xs leading-relaxed text-[#c3cde3]">
           <p>{item.explanation}</p>
           {prov.length > 0 && (
             <details className="text-[#8a97b4]">
-              <summary className="cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ad1e6]">
+              <summary className="cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]">
                 Provenance ({prov.length})
               </summary>
               <p className="mt-1 break-all font-mono text-[11px]">{prov.join(", ")}</p>
@@ -77,8 +77,8 @@ export default function EvidencePanel({ evidence, title }: { evidence: Evidence;
         </div>
         <p className="text-sm leading-relaxed text-[#e6ebf5]">{evidence.summary}</p>
 
-        <details className="rounded-md border border-[#1d2742] bg-[#0a0f1c]/60 px-3 py-2 text-xs leading-relaxed text-[#8a97b4]">
-          <summary className="cursor-pointer font-medium text-[#5ad1e6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ad1e6]">
+        <details className="rounded-sm border border-[#1d2742] bg-[#0a0f1c]/60 px-3 py-2 text-xs leading-relaxed text-[#8a97b4]">
+          <summary className="cursor-pointer font-medium text-[#74c7da] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]">
             What does this mean?
           </summary>
           <div className="mt-2 space-y-1.5">
@@ -95,7 +95,7 @@ export default function EvidencePanel({ evidence, title }: { evidence: Evidence;
                 <span className="text-[#f2b84b]">Low</span>: measurable, but several checks disagree.
               </li>
               <li>
-                <span className="text-[#5ad1e6]">Moderate</span>: reasonably bright and at most one check weakens it.
+                <span className="text-[#74c7da]">Moderate</span>: reasonably bright and at most one check weakens it.
               </li>
               <li>
                 <span className="text-[#59d98e]">Strong</span>: bright, repeated, and no check weakens it.

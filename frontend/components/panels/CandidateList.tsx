@@ -42,8 +42,8 @@ export default function CandidateList({
                   type="button"
                   onClick={() => onSelect(c.id)}
                   aria-pressed={sel}
-                  className={`w-full rounded-md border p-2.5 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5ad1e6] ${
-                    sel ? "border-[#5ad1e6]/70 bg-[#5ad1e6]/10" : "border-[#1d2742] bg-[#0a0f1c]/60 hover:border-[#5ad1e6]/40"
+                  className={`w-full rounded-sm border p-2.5 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#74c7da] ${
+                    sel ? "border-[#74c7da]/70 bg-[#74c7da]/10" : "border-[#1d2742] bg-[#0a0f1c]/60 hover:border-[#74c7da]/40"
                   }`}
                 >
                   <span className="flex flex-wrap items-center gap-x-3 gap-y-1">

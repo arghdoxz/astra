@@ -362,7 +362,7 @@ function Workspace({
             <div className="space-y-4">
               {ev?.items ? <EvidencePanel evidence={ev} /> : <p className="text-sm text-muted">Evidence appears when scoring finishes.</p>}
               {isLive(inv) && done && (
-                <div className="rounded-lg border border-line p-3">
+                <div className="rounded-sm border border-line p-3">
                   <h3 className="mb-1 text-sm font-semibold">Your verdict on this target</h3>
                   <AnnotationBox candidateId={`${inv.id}:target`} />
                 </div>

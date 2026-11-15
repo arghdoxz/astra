@@ -10,7 +10,7 @@ type Verdict = Annotation["verdict"];
 const VERDICTS: { value: Verdict; label: string; hint: string; bar: string; sel: string }[] = [
   { value: "real", label: "Real", hint: "I think this is a genuine astronomical change", bar: "#59d98e", sel: "border-[#59d98e] bg-[#59d98e]/15 text-[#59d98e]" },
   { value: "artifact", label: "Artifact", hint: "I think this is an instrument or processing artifact", bar: "#f26b6b", sel: "border-[#f26b6b] bg-[#f26b6b]/15 text-[#f58a8a]" },
-  { value: "known", label: "Known object", hint: "I recognise this as a catalogued object", bar: "#5ad1e6", sel: "border-[#5ad1e6] bg-[#5ad1e6]/15 text-[#5ad1e6]" },
+  { value: "known", label: "Known object", hint: "I recognise this as a catalogued object", bar: "#74c7da", sel: "border-[#74c7da] bg-[#74c7da]/15 text-[#74c7da]" },
   { value: "unsure", label: "Unsure", hint: "I cannot tell", bar: "#8a97b4", sel: "border-[#8a97b4] bg-[#8a97b4]/15 text-[#c3cde3]" },
 ];
 
@@ -89,7 +89,7 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
               : "The annotation service could not be reached, so verdicts cannot be read or saved right now."}
             {!demo && (
               <p className="mt-2">
-                <button type="button" className="text-[#5ad1e6] underline underline-offset-2" onClick={() => void load()}>
+                <button type="button" className="text-[#74c7da] underline underline-offset-2" onClick={() => void load()}>
                   Try again
                 </button>
               </p>
@@ -108,8 +108,8 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
             title={v.hint}
             disabled={disabled}
             onClick={() => setVerdict(v.value)}
-            className={`rounded-md border px-2 py-1.5 text-xs font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5ad1e6] disabled:cursor-not-allowed disabled:opacity-50 ${
-              verdict === v.value ? v.sel : "border-[#1d2742] bg-[#0a0f1c] text-[#e6ebf5] hover:border-[#5ad1e6]/50"
+            className={`rounded-sm border px-2 py-1.5 text-xs font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#74c7da] disabled:cursor-not-allowed disabled:opacity-50 ${
+              verdict === v.value ? v.sel : "border-[#1d2742] bg-[#0a0f1c] text-[#e6ebf5] hover:border-[#74c7da]/50"
             }`}
           >
             {v.label}
@@ -188,7 +188,7 @@ export default function AnnotationBox({ candidateId }: { candidateId: string }) 
               {recent
                 .filter((a) => a.note)
                 .map((a) => (
-                  <li key={a.id} className="rounded-md border border-[#1d2742] bg-[#0a0f1c]/60 px-2.5 py-1.5 text-xs">
+                  <li key={a.id} className="rounded-sm border border-[#1d2742] bg-[#0a0f1c]/60 px-2.5 py-1.5 text-xs">
                     <span className="font-medium text-[#e6ebf5]">{VERDICTS.find((v) => v.value === a.verdict)?.label ?? a.verdict}</span>
                     <span className="text-[#8a97b4]">
                       {" "}

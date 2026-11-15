@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import InvestigateClient from "./InvestigateClient";
 
 export const metadata: Metadata = {
-  title: "Investigate — ASTRA",
+  title: "Investigate · ASTRA",
   description: "Investigate a position on the sky with real SPHEREx observations over time.",
 };
 

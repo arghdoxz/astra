@@ -3,7 +3,7 @@ import TargetCard from "@/components/targets/TargetCard";
 import { TARGETS } from "@/lib/targets";
 
 export const metadata: Metadata = {
-  title: "Target library — ASTRA",
+  title: "Target library · ASTRA",
   description: "Five well-studied objects used to validate ASTRA against known answers.",
 };
 

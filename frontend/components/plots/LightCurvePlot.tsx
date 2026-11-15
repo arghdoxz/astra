@@ -103,7 +103,7 @@ export default function LightCurvePlot({ inv }: { inv: Investigation }) {
         x1: mjdToIso(end),
         y0: 0,
         y1: 1,
-        fillcolor: i % 2 === 0 ? "rgba(90,209,230,0.07)" : "rgba(242,184,75,0.06)",
+        fillcolor: i % 2 === 0 ? "rgba(116, 199, 218,0.07)" : "rgba(242,184,75,0.06)",
         line: { width: 0 },
         layer: "below",
       });
@@ -165,8 +165,8 @@ export default function LightCurvePlot({ inv }: { inv: Investigation }) {
                 return (
                   <label
                     key={d}
-                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-[#5ad1e6] ${
-                      on ? "border-[#5ad1e6]/40 bg-[#5ad1e6]/10 text-[#e6ebf5]" : "border-[#1d2742] text-[#8a97b4]"
+                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-sm border px-2 py-1 text-xs focus-within:outline focus-within:outline-2 focus-within:outline-[#74c7da] ${
+                      on ? "border-[#74c7da]/40 bg-[#74c7da]/10 text-[#e6ebf5]" : "border-[#1d2742] text-[#8a97b4]"
                     }`}
                   >
                     <input type="checkbox" className="sr-only" checked={on} onChange={() => toggleDet(d)} />

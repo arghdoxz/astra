@@ -72,7 +72,7 @@ export default function HealthChip() {
       onClick={retry}
       title={title}
       aria-live="polite"
-      className="inline-flex max-w-full items-center gap-2 rounded-full border border-line bg-panel px-3 py-1 text-xs text-muted transition-colors hover:text-fg cursor-pointer"
+      className="inline-flex max-w-full items-center gap-2 rounded-sm border border-line bg-panel mono px-3 py-1 text-xs text-muted transition-colors hover:text-fg cursor-pointer"
     >
       <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${dot} ${state.kind === "checking" ? "animate-pulse" : ""}`} />
       <span className="truncate">{label}</span>

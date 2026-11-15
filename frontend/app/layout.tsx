@@ -1,14 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { IBM_Plex_Sans, IBM_Plex_Sans_Condensed, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
+import SkyBackdrop from "@/components/layout/SkyBackdrop";
 
-// One font family (IBM Plex): Sans for UI text, Mono for numbers and coordinates.
+// One font family (IBM Plex): Sans for UI text, Condensed for display headings, Mono for numbers and labels.
 const plexSans = IBM_Plex_Sans({
   variable: "--font-plex-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  display: "swap",
+});
+const plexCond = IBM_Plex_Sans_Condensed({
+  variable: "--font-plex-cond",
+  subsets: ["latin"],
+  weight: ["500", "600"],
   display: "swap",
 });
 const plexMono = IBM_Plex_Mono({
@@ -19,20 +26,21 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ASTRA — SPHEREx Time-Domain Explorer",
+  title: "ASTRA · SPHEREx time-domain explorer",
   description:
     "Investigate real NASA SPHEREx infrared observations over time: movers, variables and 0.75–5 µm spectra, with evidence you can check. Not affiliated with or endorsed by NASA.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05070d",
+  themeColor: "#04060b",
   colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${plexSans.variable} ${plexCond.variable} ${plexMono.variable}`}>
       <body className="min-h-screen flex flex-col">
+        <SkyBackdrop />
         <Nav />
         <div className="flex-1 flex flex-col">{children}</div>
         <Footer />

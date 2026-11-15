@@ -11,7 +11,7 @@ const RIGHT = 12;
 const AXIS_H = 22;
 
 const STATUS_COLOR: Record<string, string> = {
-  ok: "#5ad1e6",
+  ok: "#74c7da",
   failed: "#f26b6b",
   skipped: "#5f6b88",
 };
@@ -120,8 +120,8 @@ export default function ObservationTimeline({
                     }
                   }}
                 >
-                  <rect x={x0 - 3} y={TOP - 4} width={w + 6} height={detectors.length * ROW_H + 8} rx={4} fill={sel ? "rgba(90,209,230,0.16)" : "rgba(90,209,230,0.07)"} stroke={sel ? "#5ad1e6" : "rgba(90,209,230,0.25)"} strokeWidth={1} />
-                  <text x={x0 + w / 2} y={TOP - 9} textAnchor="middle" fontSize={10} fill={sel ? "#5ad1e6" : "#8a97b4"}>
+                  <rect x={x0 - 3} y={TOP - 4} width={w + 6} height={detectors.length * ROW_H + 8} rx={4} fill={sel ? "rgba(116, 199, 218,0.16)" : "rgba(116, 199, 218,0.07)"} stroke={sel ? "#74c7da" : "rgba(116, 199, 218,0.25)"} strokeWidth={1} />
+                  <text x={x0 + w / 2} y={TOP - 9} textAnchor="middle" fontSize={10} fill={sel ? "#74c7da" : "#8a97b4"}>
                     {v.id} · {v.date_label}
                   </text>
                   <title>{`${v.id}: ${v.date_label}, ${v.n_exposures} exposures (${v.collection})`}</title>

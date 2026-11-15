@@ -124,7 +124,7 @@ export default function PhotometryTable({ inv }: { inv: Investigation }) {
                       <button
                         type="button"
                         onClick={() => onSort(c.key)}
-                        className="inline-flex items-center gap-1 uppercase tracking-wide hover:text-[#5ad1e6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ad1e6]"
+                        className="inline-flex items-center gap-1 uppercase tracking-wide hover:text-[#74c7da] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]"
                       >
                         {c.label}
                         <span aria-hidden className="text-[9px]">

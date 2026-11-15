@@ -6,7 +6,7 @@ export const PALETTE = {
   border: "#1d2742",
   text: "#e6ebf5",
   muted: "#8a97b4",
-  cyan: "#5ad1e6",
+  cyan: "#74c7da",
   amber: "#f2b84b",
   green: "#59d98e",
   red: "#f26b6b",
@@ -14,13 +14,13 @@ export const PALETTE = {
 };
 
 /** One colour per visit (colour-blind-friendly-ish, distinct on dark). */
-export const VISIT_COLORS = ["#5ad1e6", "#f2b84b", "#e05bd1", "#59d98e", "#8fa8ff", "#f2866b", "#c79bff", "#e6ebf5"];
+export const VISIT_COLORS = ["#74c7da", "#f2b84b", "#e05bd1", "#59d98e", "#8fa8ff", "#f2866b", "#c79bff", "#e6ebf5"];
 export const visitColor = (index: number) => VISIT_COLORS[((index % VISIT_COLORS.length) + VISIT_COLORS.length) % VISIT_COLORS.length];
 
 /** One colour per detector D1..D6. */
 export const DET_COLORS: Record<number, string> = {
   1: "#8fa8ff",
-  2: "#5ad1e6",
+  2: "#74c7da",
   3: "#59d98e",
   4: "#f2b84b",
   5: "#f2866b",

@@ -3,7 +3,7 @@ import HistoryList from "@/components/panels/HistoryList";
 import ReviewQueue from "@/components/panels/ReviewQueue";
 
 export const metadata: Metadata = {
-  title: "Review — ASTRA",
+  title: "Review · ASTRA",
   description: "Citizen-science review: look at the evidence and record your verdict.",
 };
 

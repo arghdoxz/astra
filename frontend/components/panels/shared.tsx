@@ -64,7 +64,7 @@ export function Card({
   return (
     <section
       id={id}
-      className={`rounded-lg border border-[#1d2742] bg-[#111830] p-3 text-[#e6ebf5] sm:p-4 ${className}`}
+      className={`rounded-sm border border-[#1d2742] bg-[#111830] p-3 text-[#e6ebf5] sm:p-4 ${className}`}
     >
       {(title || right) && (
         <header className="mb-3 flex flex-wrap items-start justify-between gap-2">
@@ -102,7 +102,7 @@ export function EmptyState({
   return (
     <div
       role="status"
-      className={`rounded-md border border-dashed ${border} bg-[#0a0f1c]/60 px-3 py-4 text-center`}
+      className={`rounded-sm border border-dashed ${border} bg-[#0a0f1c]/60 px-3 py-4 text-center`}
     >
       <p className="text-sm font-medium text-[#e6ebf5]">{title}</p>
       {children && <div className="mx-auto mt-1 max-w-prose text-xs leading-relaxed text-[#8a97b4]">{children}</div>}
@@ -115,9 +115,9 @@ export function Note({ children, tone = "muted" }: { children: ReactNode; tone?:
     tone === "amber"
       ? "border-[#f2b84b]/40 bg-[#f2b84b]/10 text-[#f2d9a0]"
       : tone === "cyan"
-        ? "border-[#5ad1e6]/30 bg-[#5ad1e6]/10 text-[#bfeaf3]"
+        ? "border-[#74c7da]/30 bg-[#74c7da]/10 text-[#bfeaf3]"
         : "border-[#1d2742] bg-[#0a0f1c]/60 text-[#8a97b4]";
-  return <p className={`rounded-md border px-2.5 py-1.5 text-xs leading-relaxed ${cls}`}>{children}</p>;
+  return <p className={`rounded-sm border px-2.5 py-1.5 text-xs leading-relaxed ${cls}`}>{children}</p>;
 }
 
 export function Pill({
@@ -132,7 +132,7 @@ export function Pill({
   return (
     <span
       title={title}
-      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium leading-tight ${className}`}
+      className={`inline-flex items-center gap-1 rounded-sm border px-2 py-0.5 text-[11px] font-medium leading-tight ${className}`}
     >
       {children}
     </span>
@@ -141,11 +141,11 @@ export function Pill({
 
 /** Shared control class strings so every control looks consistent and has a focus ring. */
 export const btn =
-  "inline-flex items-center justify-center gap-1.5 rounded-md border border-[#1d2742] bg-[#0a0f1c] px-2.5 py-1.5 text-xs font-medium text-[#e6ebf5] transition-colors hover:border-[#5ad1e6]/60 hover:text-[#5ad1e6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5ad1e6] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-[#1d2742] disabled:hover:text-[#e6ebf5]";
+  "inline-flex items-center justify-center gap-1.5 rounded-sm border border-[#1d2742] bg-[#0a0f1c] px-2.5 py-1.5 text-xs font-medium text-[#e6ebf5] transition-colors hover:border-[#74c7da]/60 hover:text-[#74c7da] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#74c7da] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-[#1d2742] disabled:hover:text-[#e6ebf5]";
 export const btnPrimary =
-  "inline-flex items-center justify-center gap-1.5 rounded-md border border-[#5ad1e6]/60 bg-[#5ad1e6]/15 px-3 py-1.5 text-xs font-semibold text-[#5ad1e6] transition-colors hover:bg-[#5ad1e6]/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5ad1e6] disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex items-center justify-center gap-1.5 rounded-sm border border-[#74c7da]/60 bg-[#74c7da]/15 px-3 py-1.5 text-xs font-semibold text-[#74c7da] transition-colors hover:bg-[#74c7da]/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#74c7da] disabled:cursor-not-allowed disabled:opacity-50";
 export const inputCls =
-  "w-full rounded-md border border-[#1d2742] bg-[#0a0f1c] px-2 py-1.5 text-xs text-[#e6ebf5] placeholder:text-[#8a97b4]/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ad1e6]";
+  "w-full rounded-sm border border-[#1d2742] bg-[#0a0f1c] px-2 py-1.5 text-xs text-[#e6ebf5] placeholder:text-[#8a97b4]/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]";
 
 /** Small segmented toggle used by plots (real buttons, aria-pressed). */
 export function Toggle({
@@ -160,15 +160,15 @@ export function Toggle({
   label: string;
 }) {
   return (
-    <div role="group" aria-label={label} className="inline-flex overflow-hidden rounded-md border border-[#1d2742]">
+    <div role="group" aria-label={label} className="inline-flex overflow-hidden rounded-sm border border-[#1d2742]">
       {options.map((o) => (
         <button
           key={o.value}
           type="button"
           aria-pressed={value === o.value}
           onClick={() => onChange(o.value)}
-          className={`px-2.5 py-1 text-xs font-medium focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#5ad1e6] ${
-            value === o.value ? "bg-[#5ad1e6]/20 text-[#5ad1e6]" : "bg-[#0a0f1c] text-[#8a97b4] hover:text-[#e6ebf5]"
+          className={`px-2.5 py-1 text-xs font-medium focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#74c7da] ${
+            value === o.value ? "bg-[#74c7da]/20 text-[#74c7da]" : "bg-[#0a0f1c] text-[#8a97b4] hover:text-[#e6ebf5]"
           }`}
         >
           {o.label}
@@ -185,7 +185,7 @@ export function Toggle({
 const KIND_META: Record<StatementKind, { label: string; cls: string; desc: string }> = {
   measured: {
     label: "Measured",
-    cls: "border-[#5ad1e6]/40 bg-[#5ad1e6]/10 text-[#5ad1e6]",
+    cls: "border-[#74c7da]/40 bg-[#74c7da]/10 text-[#74c7da]",
     desc: "A number or fact computed directly from SPHEREx data.",
   },
   catalog: {
@@ -232,7 +232,7 @@ const CONF_META: Record<Confidence, { label: string; cls: string; bars: number }
     bars: 0,
   },
   low: { label: "Low confidence tier", cls: "border-[#f2b84b]/50 bg-[#f2b84b]/10 text-[#f2b84b]", bars: 1 },
-  moderate: { label: "Moderate confidence tier", cls: "border-[#5ad1e6]/50 bg-[#5ad1e6]/10 text-[#5ad1e6]", bars: 2 },
+  moderate: { label: "Moderate confidence tier", cls: "border-[#74c7da]/50 bg-[#74c7da]/10 text-[#74c7da]", bars: 2 },
   strong: { label: "Strong confidence tier", cls: "border-[#59d98e]/50 bg-[#59d98e]/10 text-[#59d98e]", bars: 3 },
 };
 
@@ -243,7 +243,7 @@ export function ConfidenceBadge({ confidence, reason }: { confidence: Confidence
     <span className="inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1">
       <span
         title={reason}
-        className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs font-semibold ${m.cls}`}
+        className={`inline-flex items-center gap-1.5 rounded-sm border px-2 py-0.5 text-xs font-semibold ${m.cls}`}
       >
         <span aria-hidden className="inline-flex items-end gap-px">
           {[1, 2, 3].map((i) => (
@@ -265,8 +265,8 @@ const CLASS_TONE: Record<Classification, string> = {
   insufficient_data: "border-[#8a97b4]/50 text-[#8a97b4]",
   likely_artifact: "border-[#f26b6b]/50 bg-[#f26b6b]/10 text-[#f58a8a]",
   solar_system_object: "border-[#f2b84b]/50 bg-[#f2b84b]/10 text-[#f2b84b]",
-  known_high_pm_star: "border-[#5ad1e6]/50 bg-[#5ad1e6]/10 text-[#5ad1e6]",
-  known_variable: "border-[#5ad1e6]/50 bg-[#5ad1e6]/10 text-[#5ad1e6]",
+  known_high_pm_star: "border-[#74c7da]/50 bg-[#74c7da]/10 text-[#74c7da]",
+  known_variable: "border-[#74c7da]/50 bg-[#74c7da]/10 text-[#74c7da]",
   known_no_change: "border-[#59d98e]/40 bg-[#59d98e]/10 text-[#59d98e]",
   no_significant_change: "border-[#59d98e]/40 bg-[#59d98e]/10 text-[#59d98e]",
   unexplained_needs_review: "border-[#e05bd1]/50 bg-[#e05bd1]/10 text-[#f08be3]",
@@ -276,7 +276,7 @@ const CLASS_TONE: Record<Classification, string> = {
 export function ClassificationBadge({ classification, label }: { classification: Classification; label: string }) {
   const cls = CLASS_TONE[classification] ?? "border-[#8a97b4]/50 text-[#8a97b4]";
   return (
-    <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-semibold ${cls}`}>
+    <span className={`inline-flex items-center rounded-sm border px-2 py-0.5 text-xs font-semibold ${cls}`}>
       {label}
     </span>
   );
@@ -287,7 +287,7 @@ export function NoveltyChip({ novelty }: { novelty: "catalogued" | "uncatalogued
     catalogued: {
       t: "Catalogued",
       d: "At least one catalog association exists within the match radius.",
-      c: "text-[#5ad1e6] border-[#5ad1e6]/40",
+      c: "text-[#74c7da] border-[#74c7da]/40",
     },
     uncatalogued: {
       t: "No catalog association",
@@ -301,7 +301,7 @@ export function NoveltyChip({ novelty }: { novelty: "catalogued" | "uncatalogued
     },
   }[novelty];
   return (
-    <span title={m.d} className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium ${m.c}`}>
+    <span title={m.d} className={`inline-flex items-center rounded-sm border px-2 py-0.5 text-[11px] font-medium ${m.c}`}>
       {m.t}
     </span>
   );
@@ -326,7 +326,7 @@ export function StatusChip({
   return (
     <span
       title={message ?? undefined}
-      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${tone}`}
+      className={`inline-flex items-center gap-1 rounded-sm border px-2 py-0.5 text-[11px] font-medium ${tone}`}
     >
       <span aria-hidden>{glyph}</span>
       {label && <span>{label}</span>}
@@ -337,7 +337,7 @@ export function StatusChip({
 
 export function ErrorNote({ children }: { children: ReactNode }) {
   return (
-    <p role="alert" className="rounded-md border border-[#f26b6b]/40 bg-[#f26b6b]/10 px-2.5 py-1.5 text-xs text-[#f58a8a]">
+    <p role="alert" className="rounded-sm border border-[#f26b6b]/40 bg-[#f26b6b]/10 px-2.5 py-1.5 text-xs text-[#f58a8a]">
       {children}
     </p>
   );

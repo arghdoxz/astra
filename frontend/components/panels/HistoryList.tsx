@@ -125,12 +125,12 @@ export default function HistoryList() {
       {entries.length === 0 ? (
         <EmptyState title="No recent investigations">Search for a target or open a demo target to start one.</EmptyState>
       ) : (
-        <ul className="divide-y divide-[#1d2742] rounded-lg border border-[#1d2742] bg-[#111830]">
+        <ul className="divide-y divide-[#1d2742] rounded-sm border border-[#1d2742] bg-[#111830]">
           {entries.map((e) => (
             <li key={`${e.source}-${e.id}`}>
               <Link
                 href={href(e)}
-                className="flex flex-col gap-1 px-3 py-2.5 hover:bg-[#5ad1e6]/5 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#5ad1e6]"
+                className="flex flex-col gap-1 px-3 py-2.5 hover:bg-[#74c7da]/5 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#74c7da]"
               >
                 <span className="flex flex-wrap items-baseline justify-between gap-x-3">
                   <span className="text-sm font-medium text-[#e6ebf5]">{e.name || "Unnamed position"}</span>

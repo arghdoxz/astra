@@ -1,0 +1,19 @@
+<section id="pipeline" data-transition="fade">
+<div class="head">
+<p class="eyebrow">WHAT ASTRA DOES</p>
+<h2>From any sky position to graded evidence, live</h2>
+<p class="body" style="width:1400px">Every step runs on real SPHEREx DR1 and QR3 images from NASA/IPAC IRSA. Nothing is precomputed except offline snapshots, which are labelled.</p>
+</div>
+<div class="flow">
+<div class="step in" style="--i:0"><p class="num">01</p><p class="name">Resolve</p><p class="body">Name or coordinates, with proper motion</p></div>
+<div class="step in" style="--i:1"><p class="num">02</p><p class="name">Fetch</p><p class="body">Every SPHEREx exposure of that spot</p></div>
+<div class="step in" style="--i:2"><p class="num">03</p><p class="name">Stack</p><p class="body">~6-month visits, blinked and differenced</p></div>
+<div class="step in" style="--i:3"><p class="num">04</p><p class="name">Measure</p><p class="body">Flux, position, 0.75–5 µm spectrum, motion</p></div>
+<div class="step in" style="--i:4"><p class="num">05</p><p class="name">Check</p><p class="body">Flags, blends, Gaia, SIMBAD, CatWISE, SkyBoT</p></div>
+<div class="step in" style="--i:5"><p class="num">06</p><p class="name">Explain</p><p class="body">AI restates evidence; cannot add numbers</p></div>
+<div class="step in" style="--i:6"><p class="num">07</p><p class="name">Review</p><p class="body">People record verdicts and export reports</p></div>
+</div>
+<p class="small" style="margin-top:40px">FastAPI · Astropy · photutils · reproject on the backend. Next.js · Plotly · Aladin Lite on the frontend. Every view state lives in a shareable URL.</p>
+<div class="footer"><span>ASTRA · Space Apps 2026</span><span>03</span></div>
+<aside>The pipeline is the same for any coordinate on the sky. ASTRA queries IRSA’s SIA2 service for every SPHEREx exposure, streams small cutouts, subtracts the zodiacal light model, and stacks exposures into visits roughly six months apart. It predicts where the target should be at every exposure from its catalogued proper motion and parallax, measures it, and then checks the result against Gaia, SIMBAD, CatWISE and known asteroids before grading the evidence.</aside>
+</section>

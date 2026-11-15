@@ -147,7 +147,7 @@ export default function SpectrumPlot({
       x1: e.hi,
       y0: 0,
       y1: 1,
-      fillcolor: i % 2 === 0 ? "rgba(90,209,230,0.05)" : "rgba(255,255,255,0.0)",
+      fillcolor: i % 2 === 0 ? "rgba(116, 199, 218,0.05)" : "rgba(255,255,255,0.0)",
       line: { color: PALETTE.border, width: 1, dash: "dot" },
       layer: "below",
     }));

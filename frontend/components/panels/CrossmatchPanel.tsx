@@ -157,7 +157,7 @@ export default function CrossmatchPanel({ inv }: { inv: Investigation }) {
           value={radius}
           onChange={(e) => setRadius(Number(e.target.value))}
           aria-label="Match radius in arcseconds"
-          className="min-w-[10rem] flex-1 accent-[#5ad1e6]"
+          className="min-w-[10rem] flex-1 accent-[#74c7da]"
           disabled={!live}
         />
         <span className="w-12 text-right text-xs tabular-nums text-[#e6ebf5]">{radius}″</span>

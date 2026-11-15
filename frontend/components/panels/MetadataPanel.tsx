@@ -178,7 +178,7 @@ export default function MetadataPanel({
             <button
               type="button"
               onClick={() => setShowAll((s) => !s)}
-              className="mt-1 text-xs text-[#5ad1e6] underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ad1e6]"
+              className="mt-1 text-xs text-[#74c7da] underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#74c7da]"
             >
               {showAll ? "Show fewer" : `Show all ${exps.length}`}
             </button>
@@ -196,7 +196,7 @@ export default function MetadataPanel({
           {stats.topFlags.slice(0, 8).map(([k, v]) => (
             <li
               key={k}
-              className={`rounded-md border px-2 py-0.5 text-[11px] ${
+              className={`rounded-sm border px-2 py-0.5 text-[11px] ${
                 CONTAM.test(k)
                   ? "border-[#f2b84b]/50 bg-[#f2b84b]/10 text-[#f2b84b]"
                   : "border-[#1d2742] text-[#8a97b4]"
@@ -234,7 +234,7 @@ export default function MetadataPanel({
                   return (
                     <td
                       key={d}
-                      className={`${tdCls} text-center ${n ? "text-[#e6ebf5]" : "text-[#8a97b4]/50"} ${sel ? "bg-[#5ad1e6]/15 font-semibold" : ""}`}
+                      className={`${tdCls} text-center ${n ? "text-[#e6ebf5]" : "text-[#8a97b4]/50"} ${sel ? "bg-[#74c7da]/15 font-semibold" : ""}`}
                     >
                       {n || "·"}
                     </td>

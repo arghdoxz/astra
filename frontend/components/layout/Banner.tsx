@@ -24,7 +24,7 @@ export default function Banner({
 }) {
   const s = STYLES[tone];
   return (
-    <div role={role ?? (tone === "danger" ? "alert" : "status")} className={`fade-in flex gap-3 items-start rounded-lg border px-3.5 py-2.5 text-sm ${s.box}`}>
+    <div role={role ?? (tone === "danger" ? "alert" : "status")} className={`fade-in flex gap-3 items-start rounded-sm border px-3.5 py-2.5 text-sm ${s.box}`}>
       <span aria-hidden className={`mt-[7px] h-2 w-2 shrink-0 rounded-full ${s.dot}`} />
       <div className="min-w-0 flex-1">
         {title && <div className="font-medium">{title}</div>}

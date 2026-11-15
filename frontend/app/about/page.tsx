@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About — ASTRA",
+  title: "About · ASTRA",
   description: "What ASTRA is, where its data comes from, how it works, and what it cannot do.",
 };
 
