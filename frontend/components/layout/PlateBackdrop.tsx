@@ -201,14 +201,23 @@ export default function PlateBackdrop() {
       build();
       schedule();
     };
+    // Text lying directly on the plate (.on-plate) turns white inside the loupe; it reads these.
+    const root = document.documentElement.style;
+    const setLoupeVars = (x: number, y: number) => {
+      root.setProperty("--lx", `${x}px`);
+      root.setProperty("--ly", `${y}px`);
+    };
+    root.setProperty("--loupe-r", `${LOUPE_R}px`);
     const onMove = (e: PointerEvent) => {
       pointer.x = e.clientX;
       pointer.y = e.clientY;
       pointer.inside = true;
+      setLoupeVars(e.clientX, e.clientY);
       schedule();
     };
     const onLeave = () => {
       pointer.inside = false;
+      setLoupeVars(-9999, -9999);
       schedule();
     };
     window.addEventListener("resize", onResize);
@@ -220,6 +229,7 @@ export default function PlateBackdrop() {
       window.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
+      setLoupeVars(-9999, -9999);
       if (raf) cancelAnimationFrame(raf);
     };
   }, [landing, hidden]);

@@ -130,6 +130,29 @@ h1, h2, h3 { text-wrap: balance; }
   .negative { filter: invert(1); }
 }
 
+/*
+ * Text that lies directly on the plate (not on a paper sheet). The landing-page loupe shows a
+ * dark sky, so under the loupe this text must turn white. The text colour is painted with a
+ * viewport-fixed gradient: white inside the loupe circle (--lx/--ly/--loupe-r, set by
+ * PlateBackdrop), the normal ink outside. Unlayered on purpose so it beats colour utilities.
+ */
+.on-plate, .on-plate * {
+  --plate-ink: var(--text);
+  background-image: radial-gradient(
+    circle var(--loupe-r, 92px) at var(--lx, -9999px) var(--ly, -9999px),
+    #fff calc(var(--loupe-r, 92px) - 1px),
+    var(--plate-ink) var(--loupe-r, 92px)
+  );
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.on-plate.text-muted, .on-plate .text-muted { --plate-ink: var(--muted); }
+.on-plate a { --plate-ink: var(--blue); text-decoration-color: var(--blue); }
+.on-plate a:hover { --plate-ink: var(--pencil); text-decoration-color: var(--pencil); }
+.on-plate ::selection { color: var(--text); }
+
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }

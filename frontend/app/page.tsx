@@ -28,8 +28,8 @@ export default function Home() {
         <BlinkPlate />
 
         <div className="order-first lg:order-none lg:pt-6">
-          <h1 className="serif text-[2.6rem] font-semibold leading-[1.05] sm:text-[3.4rem]">Find what moved.</h1>
-          <p className="mt-5 max-w-[34rem] text-[1.08rem] leading-relaxed">
+          <h1 className="on-plate serif text-[2.6rem] font-semibold leading-[1.05] sm:text-[3.4rem]">Find what moved.</h1>
+          <p className="on-plate mt-5 max-w-[34rem] text-[1.08rem] leading-relaxed">
             In 1930 the Planet X search found Pluto by blinking two photographic plates and looking for the speck that jumped. SPHEREx now photographs the whole sky in 102 infrared colours every
             six months. ASTRA blinks those images for any spot you choose, measures what moved or changed, and shows you the reasons to doubt it.
           </p>
@@ -37,7 +37,7 @@ export default function Home() {
             <h2 className="serif mb-3 text-lg font-semibold">Open a plate</h2>
             <SearchBar />
           </div>
-          <p className="mt-4 max-w-[34rem] text-sm text-muted">
+          <p className="on-plate mt-4 max-w-[34rem] text-sm text-muted">
             Every image here is real SPHEREx data. The pencil marks are ASTRA&rsquo;s measurements; the dashed line is where the catalogue says the object should be.
           </p>
         </div>
@@ -45,10 +45,10 @@ export default function Home() {
 
       <section className="page pb-14" aria-labelledby="library">
         <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-          <h2 id="library" className="serif text-[1.9rem] font-semibold">
+          <h2 id="library" className="on-plate serif text-[1.9rem] font-semibold">
             Plate index
           </h2>
-          <p className="text-sm text-muted">
+          <p className="on-plate text-sm text-muted">
             Five objects where the right answer is already known, so you can see ASTRA get it right and see it refuse. <Link href="/targets">Why these five</Link>
           </p>
         </div>
@@ -92,12 +92,12 @@ export default function Home() {
 
       <section className="page grid gap-10 pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]" aria-labelledby="how">
         <div>
-          <h2 id="how" className="serif text-[1.9rem] font-semibold">
+          <h2 id="how" className="on-plate serif text-[1.9rem] font-semibold">
             How a plate is read
           </h2>
-          <p className="mt-3 max-w-md text-muted">The same procedure runs for any position on the sky, live, on the public SPHEREx archive.</p>
+          <p className="on-plate mt-3 max-w-md text-muted">The same procedure runs for any position on the sky, live, on the public SPHEREx archive.</p>
         </div>
-        <ol className="space-y-5">
+        <ol className="on-plate space-y-5">
           {STEPS.map(([title, body]) => (
             <li key={title} className="border-t border-line pt-4">
               <h3 className="serif text-lg font-semibold">{title}</h3>
